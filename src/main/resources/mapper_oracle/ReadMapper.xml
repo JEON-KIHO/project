@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper_oracle.ReadMapper">
+<select id="salesData" resultType="com.example.domain.DayVO">
+ 	select day from salesView where day like #{date} || '%' and companyCode = #{companyCode} group by day order by day
+</select>
+ 
+ <select id="refundData" resultType="com.example.domain.DayVO">
+ 	select day from refundView where day like #{date} || '%' and companyCode = #{companyCode} group by day order by day
+ </select>
+ 
+ <select id="costData" resultType="com.example.domain.DayVO">
+ 	select day from costView where day like #{date} || '%' and companyCode = #{companyCode} group by day order by day
+ </select>
+ 
+<!--  <select id="invenData" resultType="com.example.domain.DayVO"> -->
+<!--  select max(day) day from invenView where day like #{date} || '%' and companyCode = #{companyCode} -->
+<!--  </select> -->
+ 
+ <select id="depositData" resultType="com.example.domain.DepositVO">
+ select max(day) day, depositAccountCode from depositView where day like #{date} || '%' and companyCode = #{companyCode} group by depositAccountCode
+ </select>
+ 
+ <select id="loansData" resultType="com.example.domain.LoansVO">
+ select max(loans_repaymentDay) day, loansAccountcode from loansView where loans_repaymentDay like #{date} || '%' and loans_companyCode = #{companyCode} group by loansAccountCode
+ </select>
+ 
+<select id="readSales" resultType="hashmap">
+	select * from salesView where day like #{date} || '%' and companyCode = #{companyCode}
+</select>
+ 
+<select id="readRefund" resultType="hashmap">
+	select * from refundView where day like #{date} || '%' and companyCode = #{companyCode}
+</select>
+
+<select id="readCost" resultType="hashmap">
+	select * from costView where day like #{date} || '%' and companyCode = #{companyCode}
+</select>
+
+<select id="readDeposit" resultType="hashmap">
+	select * from depositView where day like #{date} || '%' and companyCode = #{companyCode}
+</select>
+
+<select id="readLoans" resultType="hashmap">
+	select * from loansView where loans_repaymentDay like #{date} || '%' and loans_companyCode = #{companyCode}
+</select>
+
+<!-- <select id="readInven" resultType="hashmap"> -->
+<!-- 	select * from invenView where day like #{date} || '%' and companyCode = #{companyCode}  -->
+<!-- </select> -->
+</mapper>

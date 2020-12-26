@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper_oracle.CostMapper">
+<insert id="insert">
+   insert into day(day, wom) values(#{date}, #{wom})
+</insert>
+
+<select id="dataList" resultType="hashmap">
+   select * from costView where day like #{date} || '%' and companyCode = #{companyCode} order by day
+</select>
+
+<select id="costDailyYearList" resultType="hashmap">
+   select year from 
+	(select substr(day, 1, 2) year from costView where companyCode = #{companyCode} order by day)
+	group by year
+</select>
+
+<select id="costDailyMonthList" resultType="hashmap">
+   select month from 
+(select substr(day, 1, 2) year, substr(day, 4, 2) month from costView where day like #{year} || '%' and companyCode = #{companyCode} order by day)
+group by month order by month
+</select>
+
+<select id="dailyList" resultType="com.example.domain.DayVO">
+   select * from day where day like #{date} || '%' order by day
+</select>
+
+<select id="costList" resultType="com.example.domain.CostVO">
+   select companyCode, day, sum(costAmount) costAmount from costView where day like #{date} || '%' and companyCode = #{companyCode} group by companyCode, day order by day
+</select>
+
+<select id="monthlyCostList" resultType="hashmap">
+	select sum(costAmount) costAmount from
+   (select companyCode, day, sum(costAmount) costAmount from costView where day like #{date} || '%' and companyCode = #{companyCode} group by companyCode, day order by day)
+</select>
+
+<select id="monthlyCostListMain" resultType="integer">
+	select sum(costAmount) costAmount from
+   (select companyCode, day, sum(costAmount) costAmount from costView where day like #{date} || '%' and companyCode = #{companyCode} group by companyCode, day order by day)
+</select>
+
+<select id="costGraphList" resultType="com.example.domain.CostVO">
+   select companyCode, day, sum(costAmount) costAmount from costView where day like #{date} || '%' and companyCode = #{companyCode} group by companyCode, day order by day
+</select>
+
+<select id="salesCategoryCount" resultType="hashmap">
+   SELECT DISTINCT SUBSTR(CATEGORYNAME,INSTR(CATEGORYNAME,'/',1,1)+1,
+INSTR(CATEGORYNAME,'/',1,2)-(INSTR(CATEGORYNAME,'/',1,3)+1)) CATEGORY
+FROM SALESVIEW where companyCode = #{companyCode} ORDER BY CATEGORY
+</select>
+
+<select id="costYearList" resultType="integer">
+	select substr(day, 1, 2) year from costView where companyCode = #{companyCode} group by substr(day, 1, 2) order by substr(day, 1, 2)
+</select>
+
+<select id="costMonthList" resultType="integer">
+	select substr(day, 4, 2) month from costView where companyCode = #{companyCode} and day like #{year} || '%' group by substr(day, 4, 2) order by substr(day, 4, 2)
+</select>
+
+<select id="readInven" resultType="hashmap">
+	select * from invenView where day like #{date} || '%' and companyCode = #{companyCode} 
+</select>
+
+<select id="invenData" resultType="com.example.domain.DayVO">
+ select day from invenView where day like #{date} || '%' and companyCode = #{companyCode} group by day order by day
+ </select>
+</mapper>

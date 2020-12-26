@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper_oracle.TotalMapper">
+<select id="totalYearList" resultType="com.example.domain.DayVO">
+	select * from costView where companyCode = #{companyCode} order by day
+</select>
+
+<select id="totalMonthList" resultType="com.example.domain.DayVO">
+	select * from costView where day like #{year} || '%' and companyCode = #{companyCode} order by day
+</select>
+
+<select id="salesMonthlyAmount" resultType="hashmap">
+	select round(sum(salesAmount)/10000, 0) salesAmount, month, year from 
+	(select salesAmount, substr(day, 4, 2) month, substr(day, 1, 2) year from salesView where substr(day, 1, 2) = #{year} and companyCode = #{companyCode})
+	group by month, year order by month
+</select>
+
+<select id="refundMonthlyAmount" resultType="hashmap">
+	select round(sum(salesAmount)/10000, 0) refundAmount, month, year from 
+	(select salesAmount, substr(day, 4, 2) month, substr(day, 1, 2) year from refundView where substr(day, 1, 2) = #{year} and companyCode = #{companyCode})
+	group by month, year order by month
+</select>
+
+<select id="costMonthlyAmount" resultType="hashmap">
+	select round(sum(costAmount)/10000, 0) costAmount, month, year from 
+	(select costAmount, substr(day, 4, 2) month, substr(day, 1, 2) year from costView where substr(day, 1, 2) = #{year} and companyCode = #{companyCode})
+	group by month, year order by month
+</select>
+
+<select id="salesYearlyAmount" resultType="hashmap">
+	select round(sum(salesAmount)/10000, 0) salesAmount, year from 
+	(select salesAmount, substr(day, 1, 2) year from salesView where companyCode = #{companyCode})
+	group by year order by year
+</select>
+
+<select id="refundYearlyAmount" resultType="hashmap">
+	select round(sum(salesAmount)/10000, 0) refundAmount, year from 
+	(select salesAmount, substr(day, 1, 2) year from refundView where companyCode = #{companyCode})
+	group by year order by year
+</select>
+
+<select id="costYearlyAmount" resultType="hashmap">
+	select round(sum(costAmount)/10000, 0) costAmount, year from 
+	(select costAmount, substr(day, 1, 2) year from costView where companyCode = #{companyCode})
+	group by year order by year
+</select>
+
+<select id="salesYearlyPayTypeList" resultType="hashmap">
+	select round(sum(salesAmount)/10000, 0) salesAmount, payType, year from 
+	(select salesAmount, substr(day, 1, 2) year, payType from salesView where companyCode = #{companyCode})
+	where year = #{year} group by payType, year order by year
+</select>
+
+<select id="refundYearlyPayTypeList" resultType="hashmap">
+	select round(sum(salesAmount)/10000, 0) refundAmount, payType, year from 
+	(select salesAmount, substr(day, 1, 2) year, payType from refundView where companyCode = #{companyCode})
+	where year = #{year} group by payType, year order by year
+</select>
+
+<select id="salesMonthlyPayTypeList" resultType="hashmap">
+	select round(sum(salesAmount)/10000, 0) salesAmount, payType, year, month from 
+	(select salesAmount, substr(day, 1, 2) year, substr(day, 4, 2) month, payType from salesView where companyCode = #{companyCode})
+	where year = #{year} and month = #{month} group by payType, year, month order by year
+</select>
+
+<select id="refundMonthlyPayTypeList" resultType="hashmap">
+	select round(sum(salesAmount)/10000, 0) refundAmount, payType, year, month from 
+	(select salesAmount, substr(day, 1, 2) year, substr(day, 4, 2) month, payType from refundView where companyCode = #{companyCode})
+	where year = #{year} and month = #{month} group by year, payType, month order by year
+</select>
+
+<select id="salesYearlyCategoryList" resultType="hashmap">
+SELECT sum(salesAmount) salesAmount, SUBSTR(CATEGORYNAME,INSTR(CATEGORYNAME,'/',1,1)+1,
+INSTR(CATEGORYNAME,'/',1,2)-(INSTR(CATEGORYNAME,'/',1,1)+1)) LCATEGORY FROM SALESVIEW 
+where day like #{year} || '%' and companyCode = #{companyCode} group by SUBSTR(CATEGORYNAME,INSTR(CATEGORYNAME,'/',1,1)+1,
+INSTR(CATEGORYNAME,'/',1,2)-(INSTR(CATEGORYNAME,'/',1,1)+1))
+</select>
+
+<select id="refundYearlyCategoryList" resultType="hashmap">
+SELECT sum(salesAmount) refundAmount, SUBSTR(CATEGORYNAME,INSTR(CATEGORYNAME,'/',1,1)+1,
+INSTR(CATEGORYNAME,'/',1,2)-(INSTR(CATEGORYNAME,'/',1,1)+1)) LCATEGORY FROM refundVIEW 
+where day like #{year} || '%' and companyCode = #{companyCode} group by SUBSTR(CATEGORYNAME,INSTR(CATEGORYNAME,'/',1,1)+1,
+INSTR(CATEGORYNAME,'/',1,2)-(INSTR(CATEGORYNAME,'/',1,1)+1))
+</select>
+
+<select id="salesMonthlyCategoryList" resultType="hashmap">
+SELECT sum(salesAmount) salesAmount, SUBSTR(CATEGORYNAME,INSTR(CATEGORYNAME,'/',1,1)+1,
+INSTR(CATEGORYNAME,'/',1,2)-(INSTR(CATEGORYNAME,'/',1,1)+1)) LCATEGORY FROM SALESVIEW 
+where day like #{date} || '%' and companyCode = #{companyCode} group by SUBSTR(CATEGORYNAME,INSTR(CATEGORYNAME,'/',1,1)+1,
+INSTR(CATEGORYNAME,'/',1,2)-(INSTR(CATEGORYNAME,'/',1,1)+1))
+</select>
+
+<select id="refundMonthlyCategoryList" resultType="hashmap">
+SELECT sum(salesAmount) refundAmount, SUBSTR(CATEGORYNAME,INSTR(CATEGORYNAME,'/',1,1)+1,
+INSTR(CATEGORYNAME,'/',1,2)-(INSTR(CATEGORYNAME,'/',1,1)+1)) LCATEGORY FROM refundVIEW 
+where day like #{date} || '%' and companyCode = #{companyCode} group by SUBSTR(CATEGORYNAME,INSTR(CATEGORYNAME,'/',1,1)+1,
+INSTR(CATEGORYNAME,'/',1,2)-(INSTR(CATEGORYNAME,'/',1,1)+1))
+</select>
+
+<select id="depositMonthlyBalance" resultType="hasHmap">
+select round(sum(endBalance)/10000, 0) endBalance, substr(day, 1, 2) year, substr(day, 4, 2) month from depositView
+where (depositAccountCode, day, substr(day, 1, 2), substr(day, 4, 2)) in (select depositAccountCode, max(day) day, substr(day, 1, 2) year, substr(day, 4, 2) month from depositview  where companyCode = #{companyCode} and day like #{year} || '%' group by depositAccountcode, substr(day, 1, 2), substr(day, 4, 2))
+group by substr(day, 1, 2), substr(day, 4, 2) order by year, month
+</select>
+
+<select id="loansMonthlyBalance" resultType="hasHmap">
+select round(sum(loansBalance)/10000, 0) loansBalance, substr(loans_repaymentday, 1, 2) year, substr(loans_repaymentday, 4, 2) month from loansView
+where (loansAccountCode, loans_repaymentday, substr(loans_repaymentday, 1, 2), substr(loans_repaymentday, 4, 2)) in (select loansAccountCode, max(loans_repaymentDay) day, substr(loans_repaymentday, 1, 2) year, substr(loans_repaymentday, 4, 2) month from loansView where loans_repaymentday like #{year} || '%' and loans_companyCode = #{companyCode} group by loansAccountcode, substr(loans_repaymentday, 1, 2), substr(loans_repaymentday, 4, 2))
+group by substr(loans_repaymentday, 1, 2), substr(loans_repaymentday, 4, 2) order by year, month
+</select>
+</mapper>

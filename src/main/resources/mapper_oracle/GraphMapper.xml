@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper_oracle.GraphMapper">
+ <select id="dailyYearList" resultType="com.example.domain.DayVO">
+   select * from day order by day
+</select>
+<select id="dailyList" resultType="com.example.domain.DayVO">
+   select * from day where day like #{date} || '%' order by day
+</select>
+<select id="dailyMonthList" resultType="com.example.domain.DayVO">
+   select * from day where day like #{date} || '%' order by day
+</select>
+<!-- <select id="totalSalesView" resultType="hashmap">  -->
+<!--  select * from totalSalesView -->
+<!-- </select> -->
+<select id="costList" resultType="com.example.domain.CostVO">
+   select companyCode, day, sum(costAmount) costAmount from costView where companyCode=#{companyCode} and day like #{date} || '%' group by companyCode, day order by day
+</select>
+
+<select id="salesTotalView" resultType="hashmap">
+select * from salestotalView where companyCode=#{companyCode} and sday like #{date} || '%' order by sday
+</select>
+
+<select id="refundTotalView" resultType="hashmap">
+select * from refundtotalView where refund_companyCode=#{companyCode} and rday like #{date} || '%' order by rday
+</select>
+
+<select id="costTotalView" resultType="hashmap">
+select * from costtotalView where cost_companyCode=#{companyCode} and cday like #{date} || '%' order by cday
+</select>
+<select id="salesAmount" resultType="hashmap">
+select sum(salesAmount) salesAmount, day, payType, salesType from salesView where companyCode=#{companyCode} and day like #{date} || '%' group by day, payType, salesType order by day
+</select>
+<select id="refundAmount" resultType="hashmap">
+select sum(salesAmount) refundAmount, day, payType, salesType from refundView where companyCode=#{companyCode} and day like #{date} || '%' group by day, payType, salesType order by day
+</select>
+
+<select id="salesCategoryAmountList" resultType="hashmap">
+select substr(categoryname, instr(categoryname, '/', 1, 1)+1, instr(categoryname, '/', 1, 2)-(instr(categoryname, '/', 1, 1)+1)) lCategory,
+sum(salesAmount) salesAmount from salesView where day = #{date} and companyCode = #{companyCode}
+group by substr(categoryname, instr(categoryname, '/', 1, 1)+1, instr(categoryname, '/', 1, 2)-(instr(categoryname, '/', 1, 1)+1))
+</select>
+
+<select id="refundCategoryAmountList" resultType="hashmap">
+select substr(categoryname, instr(categoryname, '/', 1, 1)+1, instr(categoryname, '/', 1, 2)-(instr(categoryname, '/', 1, 1)+1)) lCategory,
+sum(salesAmount) refundAmount from refundView where day = #{date} and companyCode = #{companyCode}
+group by substr(categoryname, instr(categoryname, '/', 1, 1)+1, instr(categoryname, '/', 1, 2)-(instr(categoryname, '/', 1, 1)+1))
+</select>
+
+<select id="salesTotalAmount" resultType="hashmap">
+select sum(salesAmount) salesAmount from
+(select substr(categoryname, instr(categoryname, '/', 1, 1)+1, instr(categoryname, '/', 1, 2)-(instr(categoryname, '/', 1, 1)+1)) lCategory,
+sum(salesAmount) salesAmount from salesView where day = #{date} and companyCode = #{companyCode}
+group by substr(categoryname, instr(categoryname, '/', 1, 1)+1, instr(categoryname, '/', 1, 2)-(instr(categoryname, '/', 1, 1)+1)))
+</select>
+
+<select id="refundTotalAmount" resultType="hashmap">
+select sum(refundAmount) refundAmount from
+(select substr(categoryname, instr(categoryname, '/', 1, 1)+1, instr(categoryname, '/', 1, 2)-(instr(categoryname, '/', 1, 1)+1)) lCategory,
+sum(salesAmount) refundAmount from refundView where day = #{date} and companyCode = #{companyCode}
+group by substr(categoryname, instr(categoryname, '/', 1, 1)+1, instr(categoryname, '/', 1, 2)-(instr(categoryname, '/', 1, 1)+1)))
+</select>
+
+<select id="costTotalAmount" resultType="hashmap">
+select sum(costAmount) costAmount from costView where companyCode=#{companyCode} and day = #{date}
+</select>
+
+<select id="categoryList" resultType="hashmap">
+   select substr(categoryname, instr(categoryname, '/', 1, 1)+1, instr(categoryname, '/', 1, 2)-(instr(categoryname, '/', 1, 1)+1)) lCategory from category 
+   where categoryCode like #{companyCode} || '/%'
+   group by substr(categoryname, instr(categoryname, '/', 1, 1)+1, instr(categoryname, '/', 1, 2)-(instr(categoryname, '/', 1, 1)+1)) 
+   order by substr(categoryname, instr(categoryname, '/', 1, 1)+1, instr(categoryname, '/', 1, 2)-(instr(categoryname, '/', 1, 1)+1))
+</select>
+<select id="dataList" resultType="hashmap">
+   select * from costView where companyCode=#{companyCode} and day like #{date} || '%' order by day
+</select>
+<select id="dataLists" resultType="hashmap">
+   select * from costView where companyCode=#{companyCode} and day like #{date} || '%' order by day
+</select>
+
+<select id="mainDailyYearList" resultType="hashmap">
+	select year from 
+	(select substr(day, 1, 2) year from salesView where companyCode = #{companyCode} order by day)
+	group by year
+</select>
+
+<select id="mainDailyMonthList" resultType="hashmap">
+	select month from 
+(select substr(day, 1, 2) year, substr(day, 4, 2) month from salesView where day like #{year} || '%' and companyCode = #{companyCode} order by day)
+group by month order by month
+</select>
+
+<select id="mainYearList" resultType="integer">
+	select substr(day, 1, 2) year from salesView where companyCode = #{companyCode} group by substr(day, 1, 2) order by substr(day, 1, 2)
+</select>
+
+<select id="mainMonthList" resultType="integer">
+	select substr(day, 4, 2) month from salesView where companyCode = #{companyCode} and day like #{year} || '%' group by substr(day, 4, 2) order by substr(day, 4, 2)
+</select>
+</mapper>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper_oracle.InvenMapper">
+ <select id="invenList" resultType="hashmap">
+	select companyCode, substr(invenAccountName, 1, instr(invenAccountName, '/')-1) companyName, subStr(invenAccountName, instr(invenAccountName, '/')+1) invenAccountName, 
+	startInven, invenIn, invenOut, endInven from invenView where day like #{date} || '%' and companyCode = #{companyCode}
+</select>
+
+<select id="invenDailyYearList" resultType="com.example.domain.DayVO">
+	select * from invenView where companyCode = #{companyCode} order by day
+</select>
+
+<select id="invenDailyMonthList" resultType="com.example.domain.DayVO">
+	select * from invenView where day like #{date} || '%' and companyCode = #{companyCode} order by day
+</select>
+
+<select id="invenDailyList" resultType="com.example.domain.DayVO">
+	select * from invenView where day like #{date} || '%' and companyCode = #{companyCode} order by day
+</select>
+
+<select id="endInvenList" resultType="hashmap">
+select companyCode, invenAccountCode, invenAccountName, endInven from invenView where 
+(day, invenAccountName) in (select max(day), invenAccountName from invenView where companyCode = #{companyCode} group by invenAccountName)
+</select>
+</mapper>
