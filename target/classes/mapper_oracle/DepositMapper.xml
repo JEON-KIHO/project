@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper_oracle.DepositMapper">
+    <select id = "Dlist" resultType="com.example.domain.DepositVO">
+   select * from depositView_bomi where(depositAccountCode, deposit_day) in(select depositAccountCode, max(deposit_day) from depositView_bomi where deposit_companyCode = #{companyCode} group by depositAccountCode)
+    order by deposit_day
+   </select>
+   
+    <select id = "depositassets" resultType = "com.example.domain.DepositVO">
+      select * from depositaccount where depositAccountCode = #{depositAccountCode}
+   </select>
+   
+   <select id = "depositassetsread" resultType = "com.example.domain.DepositVO">
+      select * from depositView_bomi where depositAccountCode = #{depositAccountCode} and deposit_day like #{date} || '%' order by deposit_day asc
+   </select>
+   
+   <select id = "depositpercent" resultType = "hashmap">
+      select depositAccountCode, depositAccountBankName, sum(depositBalance) depositPercent from (select * from depositView_bomi where(depositAccountCode, deposit_day) in(select depositAccountCode, max(deposit_day) 
+      from depositView_bomi where deposit_companyCode = #{companyCode} group by depositAccountCode) order by deposit_day) group by depositAccountCode, depositAccountBankName
+   </select>
+   
+   <select id = "depositTotal" resultType = "hashmap">
+      select sum(endBalance) endBalance, max(day) from depositView where (depositAccountCode, day) in (select depositAccountCode, max(day) day 
+      from depositView  where companyCode = #{companyCode} group by depositAccountcode)
+   </select>
+   
+   <select id="DEYearList" resultType="integer">
+        select substr(deposit_day, 1, 2) year from depositView_bomi where deposit_companyCode = #{companyCode} and depositAccountCode = #{depositAccountCode} group by substr(deposit_day, 1, 2) order by substr(deposit_day, 1, 2)
+   </select>
+
+   <select id="DEMonthList" resultType="integer">
+         select substr(deposit_day, 4, 2) month from depositView_bomi where deposit_companyCode = #{companyCode} and deposit_day like #{year} || '%' and depositAccountCode = #{depositAccountCode} group by substr(deposit_day, 4, 2) order by substr(deposit_day, 4, 2)
+   </select>
+   
+   <select id="DEdailyYearList" resultType="hashmap">
+        select year from 
+         (select substr(deposit_day, 1, 2) year from depositView_bomi where deposit_companyCode = #{companyCode} and depositAccountCode = #{depositAccountCode} order by deposit_day)
+         group by year
+   </select>
+
+   <select id="DEdailyMonthList" resultType="hashmap">
+         select month from 
+      (select substr(deposit_day, 1, 2) year, substr(deposit_day, 4, 2) month from depositView_bomi where deposit_day like #{year} || '%' and deposit_companyCode = #{companyCode} and depositAccountCode = #{depositAccountCode} order by deposit_day)
+      group by month order by month
+   </select>
+</mapper>

@@ -8,6 +8,7 @@ public class LoansAccountVO {
    private double loansAccountAmount;
    private String loansAccount_startDay;
    private String loansAccount_endDay;
+   private int rn;
    
    
    public String getLoansAccountCode() {
@@ -51,6 +52,12 @@ public class LoansAccountVO {
    }
    public void setLoansAccount_endDay(String loansAccount_endDay) {
       this.loansAccount_endDay = loansAccount_endDay;
+   }
+   public int getRn() {
+      return rn;
+   }
+   public void setRn(int rn) {
+      this.rn = rn;
    }
    @Override
    public String toString() {

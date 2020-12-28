@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper_oracle.ProductMapper">
+
+   <update id="updateImage">
+      insert into company(companyCode,logoImage)
+      values(#{companyCode},#{logoImage})
+   </update>
+   <update id="update">
+      update company set logoImage where companyCode = #{companyCode}
+   </update>
+   
+   <insert id="insertImage">
+      insert into company(logoImage,companyCode) values(#{logoImage},(select max(companyCode) from
+      company))
+   </insert>
+   
+   <insert id="insert">
+      insert into company(companyCode, companyName, companyType, companyCorporate, companyAddress, 
+      companyCEO, adminId, adminPassword, openDate) 
+      values(#{companyCode}, #{companyName}, #{companyType}, #{companyCorporate, jdbcType=VARCHAR}, #{companyAddress},
+      #{companyCEO}, #{adminId}, #{adminPassword}, #{openDate})
+   
+   </insert>
+   <select id="list" resultType="com.example.domain.AdminVO">
+      select * from company
+   </select>
+   <select id="read" resultType="com.example.domain.AdminVO">
+      select * from company where adminId=#{adminId}
+   </select>
+   <insert id="insertInfo">
+      insert into company(adminId,adminPassword,companyName)
+      values(#{adminId},#{adminPassword},#{companyName})
+   </insert>
+   <select id="idCheck" resultType="int">
+      SELECT COUNT(*) FROM company
+      WHERE adminId = #{adminId}
+</select>
+</mapper>

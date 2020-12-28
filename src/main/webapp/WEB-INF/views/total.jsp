@@ -202,9 +202,8 @@ function totalYearlyBalance() {
                  				minValue : 0
                  			},
                  			series : {
-                 				0: {color: 'pink'},
-                 				1: {color: 'lightgray'},
-                 				2: {color: 'skyblue', type: 'line', lineWidth: 4}
+                 				0 : {color: '#A19CFF'},
+                                1 : {color: '#CEFFC7'}
                  				
                  			},
 //                  			legend : 'none'

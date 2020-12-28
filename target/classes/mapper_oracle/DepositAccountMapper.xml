@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper_oracle.DepositAccountMapper">
+<insert id="depositaccountinsert">
+   insert into depositaccount(depositaccountcode, depositaccountbankname, depositaccountname, depositaccountrate, depositaccount_startday, depositaccountamount) 
+   values(#{depositAccountCode}, #{depositAccountBankName},#{depositAccountName}, #{depositAccountRate, jdbcType=DOUBLE},#{depositAccount_startday},#{depositAccountAmount,jdbcType=DOUBLE})
+</insert>
+<select id="depositaccountlist" resultType="hashmap">
+   select rownum rn, tbl.* 
+   from (select v.*, d.depositaccountname, d.depositaccount_startday from depositView v 
+   left join DEPOSITACCOUNT d 
+   on d.DEPOSITACCOUNTCODE=v.DEPOSITACCOUNTCODE 
+   where startbalance=endbalance and companycode=#{companyCode} order by day desc) tbl
+</select>
+<insert id="depositinsert">
+   insert into deposit(deposit_companycode, deposit_day, deposit_depositaccountcode, deposittype, depositamount, depositbalance) 
+   values(#{deposit_companyCode}, #{deposit_day}, #{deposit_depositAccountCode}, #{depositType}, #{depositAmount, jdbcType=DOUBLE}, #{depositBalance , jdbcType=DOUBLE})
+</insert>
+<update id="depositaccountupdate">
+   update depositaccount set depositaccountamount=#{depositaccountamount, jdbcType=DOUBLE} 
+   where depositaccountcode=#{depositaccountcode}
+</update>
+<select id="depositread" resultType="com.example.domain.DepositAccountVO">
+   select rownum rn, tbl.* from (select d.*
+   from depositView v left join DEPOSITACCOUNT d 
+   on d.DEPOSITACCOUNTCODE=v.DEPOSITACCOUNTCODE 
+   where startbalance=endbalance and companycode=#{companyCode} 
+   order by depositaccount_startday asc) tbl
+</select>
+</mapper>

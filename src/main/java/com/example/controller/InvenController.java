@@ -27,7 +27,7 @@ public class InvenController {
 	@RequestMapping("invenDailyYear.json")
 	@ResponseBody
 	public List<DayVO> invenDailyYearJson(HttpSession session) {
-		String companyCode = (String) session.getAttribute("companyCode");
+		String companyCode = "347-88-00867";
 		List<DayVO> array = mapper.invenDailyYearList(companyCode);
 		return array;
 	}
@@ -35,7 +35,7 @@ public class InvenController {
 	@RequestMapping("invenDailyMonth.json")
 	@ResponseBody
 	public List<DayVO> invenDailyMonthJson(String date, HttpSession session) {
-		String companyCode = (String) session.getAttribute("companyCode");
+		String companyCode = "347-88-00867";
 		String year = date.substring(2);
 		List<DayVO> array = mapper.invenDailyMonthList(year, companyCode);
 		return array;
@@ -44,7 +44,7 @@ public class InvenController {
 	@RequestMapping("invenDaily.json")
 	@ResponseBody
 	public List<DayVO> invenDailyJson(String date, HttpSession session) {
-		String companyCode = (String) session.getAttribute("companyCode");
+		String companyCode = "347-88-00867";
 		String year = date.split("/")[0].substring(2);
 		String month = date.split("/")[1];
 		date = year+"/"+month;
@@ -55,7 +55,7 @@ public class InvenController {
 	@ResponseBody
 	@RequestMapping("invenList.json")
 	public List<HashMap<String, Object>> invenListJson(String date, HttpSession session) {
-		String companyCode = (String) session.getAttribute("companyCode");
+		String companyCode = "347-88-00867";
 		String year = date.split("/")[0].substring(2);
 		String month = date.split("/")[1];
 		String day = date.split("/")[2];
@@ -70,7 +70,7 @@ public class InvenController {
 	@RequestMapping("endInvenList.json")
 	@ResponseBody
 	public List<HashMap<String, Object>> endInvenListJson(HttpSession session) {
-		String companyCode = (String) session.getAttribute("companyCode");
+		String companyCode = "347-88-00867";
 		return mapper.endInvenList(companyCode);
 	}
 }

@@ -23,11 +23,44 @@
 #nextMonth:focus{outline: none;}
 #nextYear {border:0; background:white;font-size:25px;}
 #nextYear:focus{outline: none;}
+#datePage {overflow:hidden; text-align:center; margin-top:30px; margin-left:80px; height:100px;}
+#tb {margin-left:60px; margin-top:40px; border:1px solid #ccc;}
+td {border:1px solid #ccc;}
+#pre , #next{width:160px; float:left;}
+#sel {float:left; overflow:hidden; width:150px; text-align:center; cursor:default;}
+	#selDate {float:left; width:150px;}
+	#yearList, #monthList {float:left; width:75px;}
+
+#divClose {width:150px; overflow:hidden;}
+  #close {float:right; margin:5px 15px 0px 0px; font-size:20px;}
+
+  #dailyLightBox {
+   position: absolute;
+   top: 0px;
+   left: 0px;
+   right: 0px;
+   height: 100%;
+   display: none;
+   background: rgba(0, 0, 0, 0.1);
+   z-index: 10000;
+   overflow: hidden;
+}
+
+#dailyBox {
+   margin: 70px auto;
+   margin-left:260px;
+   width:150px;
+   height:300px;
+   color:white;
+   background: rgba(0, 0, 0, 0.8);
+}
+
 </style>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>거래 확인</title>
 </head>
 <body>
+<jsp:include page="lightBox.jsp"></jsp:include>
    <div id="datePage">
    <div id="pre">
       <input type="button" value="《" id="preYear">
@@ -35,8 +68,13 @@
    </div>
    <div id="sel">
       <div id="selDate"></div>
-      <div id="yearList"></div>
-      <div id="monthList"></div>
+     <div id="dailyLightBox">
+      <div id="dailyBox">
+      <div id="divClose"><div id="close">X</div></div>
+	      <div id="yearList"></div>
+      	  <div id="monthList"></div>
+      	  </div>
+      </div>
    </div>
    <div id="next">
       <input type="button" value="〉" id="nextMonth">
@@ -94,8 +132,7 @@
 var depositAccountCode = "${vo.depositAccountCode}";
 
 $("#selDate").html(<%=thisYear%> +" / "+ <%=thisMonth%>);
-$("#yearList").hide();
-$("#monthList").hide();
+$("#dailyLightBox").hide();
 let year = $("#selDate").html().split("/")[0];
 year = year.trim();
 let month = $("#selDate").html().split("/")[1];
@@ -105,30 +142,56 @@ let date = year +"/"+ month;
 getYear();
 getMonth();
 getList();
+yearCount();
+monthCount();
+
+$("#close").click(function() {
+	$("#dailyLightBox").hide();
+});
 
 $("#selDate").on("click", function() {
-   $("#yearList").slideDown();
-   $("#monthList").slideDown();
+	$("#dailyLightBox").show();
+});
+
+$("#yearList").on("click", "#year .yData", function() {
+   year = $(this).attr("id");
+   getMonth();
+});
+
+$("#monthList").on("click", "#month .mData", function() {
+   month = $(this).attr("id");
+   $("#selDate").html(year +" / "+ month);
+   $("#dailyLightBox").hide();
+   yearCount();
+   monthCount();
    getList();
 });
 
 $("#preYear").on("click", function() {
-    year--;
-    preMonthControl();
+	lightBox();
+	setTimeout(outLightBox, 300);
+    preYearControl();
+    monthCount();
+    yearCount();
     getList();
  });
 
  $("#nextYear").on("click", function() {
-    year++;
-    nextMonthControl();
+	 lightBox();
+		setTimeout(outLightBox, 300);
+    nextYearControl();
+    yearCount();
+    monthCount();
     getList();
  });
 
  $("#preMonth").on("click", function() {
+	 lightBox();
+		setTimeout(outLightBox, 300);
        month = $("#selDate").html().split("/")[1];
        month = month.trim();
     if(month == 01 || month == 1) {
-       year--;
+       year--; 
        getMonth();
        month = "12";
     } else {
@@ -141,10 +204,15 @@ $("#preYear").on("click", function() {
     }
     date = year +"/"+ month;
     $("#selDate").html(year +" / "+ month);
+//    preMonthControl();
+    monthCount();
+    yearCount();
     getList();
  });
 
  $("#nextMonth").on("click", function() {
+	 lightBox();
+		setTimeout(outLightBox, 300);
     month = $("#selDate").html().split("/")[1];
        month = month.trim();
     if(month == 12) {
@@ -161,21 +229,12 @@ $("#preYear").on("click", function() {
     }
     date = year +"/"+ month;
     $("#selDate").html(year +" / "+ month);
+//    nextMonthControl();
+    monthCount();
+    yearCount();
     getList();
  });
 
-$("#yearList").on("click", "#year .yData", function() {
-   year = $(this).attr("id");
-   getMonth();
-});
-
-$("#monthList").on("click", "#month .mData", function() {
-   month = $(this).attr("id");
-   $("#selDate").html(year +" / "+ month);
-   $("#yearList").slideUp();
-   $("#monthList").slideUp();
-   getList();
-});
    
    function getList(){
       YM();
@@ -200,7 +259,6 @@ $("#monthList").on("click", "#month .mData", function() {
             data:{"depositAccountCode":depositAccountCode},
             dataType:"json",
             success:function(data) {
-               let yArray = new Array();
                $(data).each(function() {
                   y = this.year;
                   yearList += "<div id='"+y+"' class='yData'>"+y+"</div>";
@@ -220,7 +278,6 @@ $("#monthList").on("click", "#month .mData", function() {
             dataType:"json",
             data:{"year":year, "depositAccountCode":depositAccountCode},
             success:function(data) {
-               
                $(data).each(function() {
                   m = this.month;
                   monthList += "<div id='"+m+"' class='mData'>"+m+"</div>";
@@ -240,6 +297,7 @@ $("#monthList").on("click", "#month .mData", function() {
       }
       
       function yearCount() {
+//          YM();
             $.ajax({
               type:"get",
               url:"DEYearList.json",
@@ -264,7 +322,9 @@ $("#monthList").on("click", "#month .mData", function() {
                  if(year != last) {
                     $("#nextYear").prop("disabled", false);
                  }
+                 
               }
+              
             });
          }
 
@@ -281,7 +341,6 @@ $("#monthList").on("click", "#month .mData", function() {
                     });
                     var first = "20" + yArray[0];
                     var last = "20" + yArray[yArray.length-1];
-                    
                        $.ajax({
                           type:"get",
                           url:"DEMonthList.json",
@@ -303,6 +362,16 @@ $("#monthList").on("click", "#month .mData", function() {
                                    mLast = "0" + mLast;
                                 }
                              }
+                             if(year == first && year== last){
+                                if(month == mLast){
+                                   $("#preMonth").prop("disabled", false);
+                                   $("#nextMonth").prop("disabled", true);
+                                }
+                                if(month == mFirst){
+                                   $("#preMonth").prop("disabled", true);
+                                   $("#nextMonth").prop("disabled", false);
+                                }
+                             }
                              
                              if(year == first) {
                                 $("#nextMonth").prop("disabled", false);
@@ -311,6 +380,9 @@ $("#monthList").on("click", "#month .mData", function() {
                                 }
                                 if(month != mFirst) {
                                    $("#preMonth").prop("disabled", false);
+                                }
+                                if(month == mFirst){
+                                   $("#preMonth").prop("disabled", true);
                                 }
                               }
                              if(year == last) {
@@ -328,7 +400,7 @@ $("#monthList").on("click", "#month .mData", function() {
                });
          }
          
-         function preMonthControl() {
+         function preYearControl() {
             $.ajax({
                  type:"get",
                  url:"DEYearList.json",
@@ -350,6 +422,7 @@ $("#monthList").on("click", "#month .mData", function() {
                                 let mArray = new Array();
                                 $(data).each(function() {
                                    mArray.push(this);
+//                                    
                                 });
                                 var mFirst = mArray[0];
                                 for(var i = 1; i <= 9; i++) {
@@ -358,9 +431,12 @@ $("#monthList").on("click", "#month .mData", function() {
                                    }
                                 }
                                 $("#selDate").html(year +" / "+ mFirst);
+                                getList();
                              }
                              if(year != first) {
+                                
                                 $("#selDate").html(year +" / "+ month);
+                                getList();
                              }
                              
                           }
@@ -369,7 +445,7 @@ $("#monthList").on("click", "#month .mData", function() {
                });
          }
          
-         function nextMonthControl() {
+         function nextYearControl() {
             $.ajax({
                  type:"get",
                  url:"DEYearList.json",
@@ -399,14 +475,18 @@ $("#monthList").on("click", "#month .mData", function() {
                                    }
                                 }
                                 $("#selDate").html(year +" / "+ mLast);
+                                getList();
                              }
                              if(year != last) {
                                 $("#selDate").html(year +" / "+ month);
+                                getList();
                              }
                           }
                        });
                  }
                });
          }
+         
+         
 </script>
 </html>

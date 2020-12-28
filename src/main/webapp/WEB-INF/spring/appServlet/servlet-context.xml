@@ -41,6 +41,9 @@
                   <mapping path="/cost" />
                   <mapping path="/assets" />
                   <mapping path="/total" />
+<!--                   <mapping path="/category" /> -->
+                  <mapping path="/categoryread" />
+                  <mapping path="/insert" />
                   <beans:bean class="com.example.interceptor.AuthInterceptor" />
          </interceptor>
 	</interceptors>

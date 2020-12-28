@@ -123,7 +123,7 @@
 	</table>
 	<table border=1 style="margin-bottom:1px;">
 	
-	<tr><td rowspan=2 style="width:50px;">문보미</td><td class="sub">셀레니움 구현</td><td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td>
+	<tr><td rowspan=5 style="width:50px;">문보미</td><td class="sub">셀레니움 구현</td><td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td>
 	<td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td>
 	<td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td>
 	<td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td>
@@ -131,7 +131,42 @@
 	<td class="white"></td><td class="white"></td><td class="white"></td><td class="black"></td><td class="white"></td>
 	<td class="white"></td><td class="black"></td><td class="white"></td><td class="white"></td><td class="white"></td>
 	<td class="white"></td><td class="black"></td><td class="white"></td><td class="white"></td><td class="white"></td></tr>
-	<tr><td class="sub">컨트롤러</td></tr>
+	
+	<tr><td class="sub">기초 설정 페이지</td><td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td>
+	<td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td>
+	<td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td>
+	<td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td>
+	<td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td><td class="black"></td>
+	<td class="black"></td><td class="black"></td><td class="black"></td><td class="black"></td><td class="white"></td>
+	<td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td>
+	<td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td></tr>
+	
+	<tr><td class="sub">설정 페이지</td><td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td>
+	<td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td>
+	<td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td>
+	<td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td>
+	<td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td>
+	<td class="white"></td><td class="white"></td><td class="white"></td><td class="black"></td><td class="black"></td>
+	<td class="black"></td><td class="black"></td><td class="black"></td><td class="white"></td><td class="white"></td>
+	<td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td></tr>
+	
+	<tr><td class="sub">입력 페이지</td><td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td>
+	<td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td>
+	<td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td>
+	<td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td>
+	<td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td>
+	<td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td>
+	<td class="white"></td><td class="white"></td><td class="black"></td><td class="black"></td><td class="black"></td>
+	<td class="black"></td><td class="black"></td><td class="black"></td><td class="white"></td><td class="white"></td></tr>
+	
+	<tr><td class="sub">디버깅</td><td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td>
+	<td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td>
+	<td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td>
+	<td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td>
+	<td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td>
+	<td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td>
+	<td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td><td class="white"></td>
+	<td class="white"></td><td class="white"></td><td class="black"></td><td class="black"></td><td class="black"></td></tr>
 	
 	</table>
 	<table border=1 style="margin-bottom:1px;">

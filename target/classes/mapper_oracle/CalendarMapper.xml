@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper_oracle.CalendarMapper">
+<!-- <insert id="insert"> -->
+<!-- 	insert into day(day, wom) values(#{date}, #{wom}) -->
+<!-- </insert> -->
+
+<!-- <select id="dataList" resultType="hashmap"> -->
+<!-- 	select * from costView where day like #{date} || '%' order by day -->
+<!-- </select> -->
+
+<!-- <select id="dailyYearList" resultType="com.example.domain.DayVO"> -->
+<!-- 	select * from day order by day -->
+<!-- </select> -->
+
+<!-- <select id="dailyMonthList" resultType="com.example.domain.DayVO"> -->
+<!-- 	select * from day where day like #{date} || '%' order by day -->
+<!-- </select> -->
+
+<!-- <select id="dailyList" resultType="com.example.domain.DayVO"> -->
+<!-- 	select * from day where day like #{date} || '%' order by day -->
+<!-- </select> -->
+
+<!-- <select id="costList" resultType="com.example.domain.CostVO"> -->
+<!-- 	select companyCode, day, sum(costAmount) costAmount from costView where day like #{date} || '%' group by companyCode, day order by day -->
+<!-- </select> -->
+
+<!-- <select id="costGraphList" resultType="com.example.domain.CostVO"> -->
+<!-- 	select companyCode, day, sum(costAmount) costAmount from costView where day like #{date} || '%' group by companyCode, day order by day -->
+<!-- </select> -->
+
+<!-- <select id="salesCategoryCount" resultType="hashmap"> -->
+<!-- 	SELECT DISTINCT SUBSTR(CATEGORYNAME,INSTR(CATEGORYNAME,'/',1,1)+1, -->
+<!-- INSTR(CATEGORYNAME,'/',1,2)-(INSTR(CATEGORYNAME,'/',1,3)+1)) CATEGORY -->
+<!-- FROM SALESVIEW ORDER BY CATEGORY -->
+<!-- </select> -->
+
+<select id="salesCategoryPayType" resultType="hashmap">
+	select * from
+(SELECT sum(salesAmount) salesAmount, payType, SUBSTR(CATEGORYNAME,INSTR(CATEGORYNAME,'/',1,1)+1,
+INSTR(CATEGORYNAME,'/',1,2)-(INSTR(CATEGORYNAME,'/',1,1)+1)) LCATEGORY FROM SALESVIEW 
+where day like #{date} || '%' group by SUBSTR(CATEGORYNAME,INSTR(CATEGORYNAME,'/',1,1)+1,
+INSTR(CATEGORYNAME,'/',1,2)-(INSTR(CATEGORYNAME,'/',1,1)+1)), payType)
+where payType = #{payType} and lCategory = #{lCategory}
+</select>
+
+<select id="refundCategoryPayType" resultType="hashmap">
+select * from 
+(SELECT sum(salesAmount) refundAmount, payType, SUBSTR(CATEGORYNAME,INSTR(CATEGORYNAME,'/',1,1)+1,
+INSTR(CATEGORYNAME,'/',1,2)-(INSTR(CATEGORYNAME,'/',1,1)+1)) LCATEGORY FROM refundVIEW 
+where day like #{date} || '%' group by SUBSTR(CATEGORYNAME,INSTR(CATEGORYNAME,'/',1,1)+1,
+INSTR(CATEGORYNAME,'/',1,2)-(INSTR(CATEGORYNAME,'/',1,1)+1)), payType)
+where payType = #{payType} and lCategory = #{lCategory}
+</select>
+
+<select id="lcategorylist" resultType="hashmap">
+   select * from category where categorycode like #{companyCode} || '%'
+</select>
+
+<select id="salesThisMonthlyTotal" resultType="hashmap">
+	select sum(salesAmount) salesAmount from salesView where day like #{date} || '%' and companyCode = #{companyCode}
+</select>
+
+<select id="refundThisMonthlyTotal" resultType="hashmap">
+	select sum(salesAmount) refundAmount from refundView where day like #{date} || '%' and companyCode = #{companyCode}
+</select>
+
+<select id="costThisMonthlyTotal" resultType="hashmap">
+	select sum(costAmount) costAmount from costView where day like #{date} || '%' and companyCode = #{companyCode}
+</select>
+</mapper>

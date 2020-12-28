@@ -29,7 +29,8 @@
             <li><a href="cost">비용 & 재고</a></li>
             <li><a href="assets">자산</a></li>
             <li><a href="total">통계</a></li>
-            <li><a href="#set">설정</a></li>
+            <li><a href="categoryread">설정</a></li>
+            <li><a href="insert">NEW</a></li>
             
          </ul>
 

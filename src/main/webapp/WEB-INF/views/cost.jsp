@@ -45,27 +45,26 @@
 
 #datePage {
    overflow: hidden;
-   margin:15px 0px 15px 550px;
+   margin:15px 0px 15px 570px;
    height:60px;
    width:580px;
    text-align:center;
    
 }
 
-#pre{
+
+   #yearList, #monthList {float:left; width:75px;}
+   #pre{
 margin-top:100px;
    width: 110px;
    float: left;
    text-align:center;
+   margin-left:30px;
 }
 #next {width: 110px; margin-top:100px; float:right; text-align:center; margin-left:100px;}
-#sel {
-   overflow: hidden;
-}
-
-   #yearList, #monthList {float:left; width:75px;}
-   #selDate {float:left; width:150px; height:50px; cursor:default; font-size:30px;}
-#selDate:hover {transform: scale(0.5, 0.5); text-decoration:underline; color:#547484;}
+   #sel {float:left; overflow:hidden; width:150px; text-align:center; cursor:default; z-index:500;}
+   #selDate {float:left; width:150px; font-size:25px;}
+   #close:hover, .yData:hover, .mData:hover, #selDate:hover {color:#ccc;}
 
 .costAccountName, .costAmount, .totalCost, .monthlyCost {
    float: left;
@@ -117,8 +116,6 @@ margin-left:130px;
 }
 
 *:focus { outline: none; }
-   .yData:hover{ text-decoration:underline; color:#ccc; cursor:default;}
-   .mData:hover{ text-decoration:underline; color:#ccc; cursor:default;}
 #preYear {border:0; background:#F6F6F6; font-size:30px;}
 #preYear:focus{outline: none;}
 #preMonth {border:0; background:#F6F6F6;font-size:30px;}
@@ -153,6 +150,30 @@ select {
   .inven0,.inven1,.inven2,.inven3,.inven4,.inven5,.inven6,.inven7,.inven8{border:1px solid #ccc;padding: 0px 10px 8px 10px; color:#669;}
   .inven0,.inven6,.inven7,.inven8{font-size:22px;font-weight:800; color:black;}
   tr:hover{color:#191919; font-weight:bold; cursor:default;}
+  
+  #divClose {width:150px; overflow:hidden;}
+  #close {float:right; margin:5px 15px 0px 0px; font-size:20px;}
+  
+  #dailyLightBox {
+   position: absolute;
+   top: 0px;
+   left: 0px;
+   right: 0px;
+   height: 100%;
+   display: none;
+   background: rgba(0, 0, 0, 0);
+   z-index: 10000;
+   overflow: hidden;
+}
+
+#dailyBox {
+   margin: 210px auto;
+   margin-left:905px;
+   width:150px;
+   height:300px;
+   color:white;
+   background: rgba(0, 0, 0, 0.8);
+}
 </style>
 <body>
    <div id="divCenter">
@@ -160,8 +181,13 @@ select {
 
          <div id="sel">
       <div id="selDate"></div>
-      <div id="yearList"></div>
-      <div id="monthList"></div>
+      <div id="dailyLightBox">
+      <div id="dailyBox">
+      	<div id="divClose"><div id="close">X</div></div>
+	      <div id="yearList"></div>
+      	  <div id="monthList"></div>
+      	  </div>
+      </div>
    </div>
       </div>
       <div id="data">
@@ -188,9 +214,8 @@ select {
 </body>
 <script>
 var monthlyCost;
-$("#selDate").html(<%=thisYear%>-1 +"/"+ "12");
-$("#yearList").hide();
-$("#monthList").hide();
+$("#dailyLightBox").hide();
+$("#selDate").html(<%=thisYear%>-1 +"/"+ <%=thisMonth%>);
 let year = $("#selDate").html().split("/")[0];
 year = year.trim();
 let month = $("#selDate").html().split("/")[1];
@@ -200,14 +225,12 @@ getYear();
 getMonth();
 start();
 
-$("#selDate").on("click", function() {
-   $("#yearList").slideDown();
-   $("#monthList").slideDown();
+$("#close").click(function() {
+	$("#dailyLightBox").hide();
 });
 
-$("#data").on("click", function() {
-   $("#yearList").slideUp();
-   $("#monthList").slideUp();
+$("#selDate").on("click", function() {
+	$("#dailyLightBox").show();
 });
 
 $("#yearList").on("click", "#year .yData", function() {
@@ -220,8 +243,7 @@ $("#monthList").on("click", "#month .mData", function() {
    $("#invenDetail").html("");
    month = $(this).attr("id");
    $("#selDate").html(year +"/"+ month);
-   $("#yearList").slideUp();
-   $("#monthList").slideUp();
+   $("#dailyLightBox").hide();
    start();
 });
 
@@ -339,7 +361,7 @@ $("#preYear").on("click", function() {
                var d = this.day;
                $("#calendarView").find("#calendar").find("[name=wom]").each(function() {
                   if($(this).find(".pleaseData").attr("id") == d) {
-                        $(this).css("background", "green");
+                        $(this).css("background", "yellow");
                   }
                });
             });
@@ -390,7 +412,7 @@ function costList() {
                                                          ticks : ['0%', '100%']
                                                       },
                                                       series : {
-                                                         0: {color: 'red'}
+                                                         0: {color: 'skyblue'}
                                                          
                                                       },
                                                       bar : {

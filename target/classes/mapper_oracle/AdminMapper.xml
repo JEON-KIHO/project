@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper_oracle.AdminMapper">
+ <select id="list" resultType="com.example.domain.AdminVO">
+      select * from company
+   </select>
+   <update id="pwUpdate">
+   update company set adminPassword=#{adminPassword} where companyCode=#{companyCode} and adminId=#{adminId} 
+   </update>
+   <select id="read" resultType="com.example.domain.AdminVO">
+      select * from company where adminId=#{adminId}
+   </select>
+   <insert id="insert">
+      insert into company(adminId,adminPassword,companyName)
+      values(#{adminId},#{adminPassword},#{companyName})
+   </insert>
+   <select id="idCheck" resultType="int">
+      SELECT COUNT(*) FROM company
+      WHERE adminId = #{adminId}
+</select>
+
+</mapper>

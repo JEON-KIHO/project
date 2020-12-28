@@ -11,13 +11,14 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title> 기초설정 </title>
 <style>
-   html, body {margin: 0;padding: 0;background: #E8ECEF;height: 100%;width: 100%;text-align: center;}
-   .tabbed {width: 80%; min-width: 400px;margin: 0 auto;margin-bottom: 68px;border-bottom: 4px solid #000;overflow: hidden;transition: border 250ms ease;}
-   table {font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;width: 60%; min-width: 200px;margin: 0 auto; overflow: hidden;transition: border 250ms ease;border-collapse: collapse;}
-   .tabbed ul {margin: 0px;padding: 0px;overflow: hidden;float: left;padding-left: 48px;list-style-type: none;}
-   .tabbed ul * {margin: 0px;padding: 0px;}
+    html, body {margin:0; text-align: center;}
+   #divCenter {width: 1500px; height: 2000px; margin-left: 200px; margin-top:100px;}
+   .tabbed {width: 70%; min-width: 300px;margin: 0 auto;margin-top:100px;border-bottom: 4px solid #000;overflow: hidden;transition: border 250ms ease;}
+     #tbl {font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;width: 60%; min-width: 200px;margin: 0 auto; overflow: hidden;transition: border 250ms ease;border-collapse: collapse;}
+   .tabbed ul {margin: 0px;padding: 0px;overflow: hidden;float:left;list-style-type: none; width:800px; height:37px; margin-top:100px;}
+   .tabbed ul * { margin: 0px;padding: 0px;}
    .tabbed ul li {display: block;float: right;padding: 10px 24px 8px;background-color: #FFF;margin-right: 46px;z-index: 2;position: relative;
-               color: #777;text-transform: uppercase;transition: all 250ms ease;font: 600 13px/20px roboto, "Open Sans", Helvetica, sans-serif;}
+               cursor: pointer;color: #777;text-transform: uppercase;transition: all 250ms ease;font: 600 13px/20px roboto, "Open Sans", Helvetica, sans-serif;}
 /*    {cursor: pointer;} */
    .tabbed ul li:before, .tabbed ul li:after {display: block;content: " ";position: absolute;top: 0;height: 100%;width: 44px;background-color: #FFF;transition: all 250ms ease;}
    .tabbed ul li:before {right: -24px;transform: skew(30deg, 0deg);box-shadow: rgba(0,0,0,.1) 3px 2px 5px, inset rgba(255,255,255,.09) -1px 0;}
@@ -31,14 +32,21 @@
    .tabbed.round ul li:after {border-radius: 8px 0 0 0;}
    input{outline:none; border: none; background: transparent;}
    table th{font-size: 13px;font-weight: normal;color: #039;padding: 10px 8px;border-bottom: 2px solid #6678b1;}
-   table td{border-bottom: 1px solid #ccc;color: #669;padding: 6px 8px;}
+   #tbl td, #tbl1 td, #tbl2 td, #tbl3 td{border-bottom:1px solid  #ccc;color: #669;padding: 6px 8px;}
    table tbody tr:hover td{color: #009;}
-
+   #save {margin-top:10px; width:40px; padding: .8em .5em; font-family: inherit; font-size:12px; appearance: none; background:white; color:#669; border: 1px solid #ccc;border-radius: 5px; text-align:center;}
+   #del {margin-top:10px; width:40px; padding: .8em .5em; font-family: inherit; font-size:12px; appearance: none; background:white; color:#669; border: 1px solid #ccc;border-radius: 5px; text-align:center;}
+   #tbl2 {margin:30px 0px 30px 250px;}
+    #tbl3 {margin:30px 0px 30px 250px; width:1033px;}
+    .btnadd{width:100px; padding: .8em .5em; font-family: inherit; font-size:12px; appearance: none; background:white; color:#669; border: 1px solid #ccc;border-radius: 5px; text-align:center;}
+    .btndel{width:100px; padding: .8em .5em; font-family: inherit; font-size:12px; appearance: none; background:white; color:#669; border: 1px solid #ccc;border-radius: 5px; text-align:center;}
+   #tbl1 {margin-left:320px; width:900px;}
    </style>
+   <link rel="stylesheet" href="../resources/icono.css">
 </head>
    
 <body>
-<h2> [기초설정] </h2>
+<jsp:include page="menu.jsp"></jsp:include>
    <div class="tabbed round">
          <ul>
             <li id="menu4">대출 입력</li>
@@ -47,6 +55,7 @@
             <li id="menu1" class="active">대분류 상품 입력</li>
          </ul>
    </div>
+   <div id="divCenter">
     <section id="first-tab-group" class="tabgroup">
    <div id="frmtbl">
 <form name="frm" method="post" action="categoryinsert">
@@ -72,16 +81,16 @@
       </tr>
       </tbody>
    </table>
-   <input type="submit" class="btnpage" value="저장">
-   <input type="reset" value="취소"> 
+   <input type="submit" id="save" class="btnpage" value="저장">
+   <input type="reset" id="del" value="취소"> 
 </form>
 </div>
 <div id="frmtbl1">
 <form name="frm1" method="post" action="categoryinsert">
    <table id="tbl1" summary="Employee Pay Sheet"></table>
             
-   <input type="submit" class="btnpage" value="저장">
-   <input type="reset" value="취소">
+   <input type="submit" id="save" class="btnpage" value="저장">
+   <input type="reset" id="del" value="취소">
 </form>
 </div>
 <div id="frmtbl2">
@@ -128,8 +137,8 @@
       </tr>
       </tbody> 
    </table>
-      <input type="submit" class="btnpage" value="저장">
-      <input type="reset" value="취소">
+      <input type="submit" id="save" class="btnpage" value="저장">
+      <input type="reset" id="del" value="취소">
    </form>
    </div>
    <div id="frmtbl3">
@@ -180,11 +189,13 @@
       </tr>
       </tbody>
    </table>
-      <input type="submit" class="btnpage" value="저장">
-      <input type="reset" value="취소">
+      <input type="submit" id="save" class="btnpage" value="저장">
+      <input type="reset" id="del" value="취소">
    </form>
    </div>
    </section>
+   </div>
+   <div id="footer"><jsp:include page="footer.jsp" /></div>
 </body>
 <script>
 $(frm1).hide();
@@ -341,6 +352,28 @@ function resizeRowspan(cls){
             url :"categoryinsert",
             data :{"categorycode": lcode, "categoryname":lname},
             success: function(){
+               var addList = "";
+               $.ajax({
+                  type:"get",
+                  url:"categorylist.json",
+                  success:function(data) {
+                     if($(data.CATEGORYNAME)!= null){
+                        addList += "<thead><th width=100>대분류</th><th width=100>중분류 상품 코드</th><th width=200>중분류 상품 이름</th></thead></tbody id=''body>";
+                        $(data).each(function() {
+//                            alert("여기");
+                           addList += "<tr class='row"+this.CATEGORYCODE.split("/")[1]+"' code='"+this.CATEGORYCODE+"' name='"+this.CATEGORYNAME+"'><td width=100 class='lcategoryname' rowspan=3>"+this.CATEGORYNAME.split("/")[1]+"<input type='button' class='btnaddrow' value='+'></td>";
+                           addList += "<td  class='mcategorycode'>001</td>";
+                           addList += "<td 0 class='mcategoryname' ><input type='text' size=30  class='midname' placeholder='ex)아메리카노,아이스라떼,카페모카 등..'></td></tr>";
+                           addList += "<tr class='row"+this.CATEGORYCODE.split("/")[1]+"' code='"+this.CATEGORYCODE+"'name='"+this.CATEGORYNAME+"'><td width=100 class='mcategorycode'>002</td>";
+                           addList += "<td 0 class='mcategoryname'><input type='text' size=30 class='midname' ></td></tr>";
+                           addList += "<tr class='row"+this.CATEGORYCODE.split("/")[1]+"' code='"+this.CATEGORYCODE+"'name='"+this.CATEGORYNAME+"'><td width=100 class='mcategorycode'>003</td>";
+                           addList += "<td  class='mcategoryname'><input type='text' size=30  class='midname' ></td></tr>";
+                        });
+                           addList +="</tbody>";
+                        $("#tbl1").html(addList);
+                     }
+                  }
+               });
             }
          });
          }
@@ -360,15 +393,15 @@ function resizeRowspan(cls){
       if(!confirm("미입력시 기본값으로 자동적용됩니다.\n그래도 저장하시겠습니까?")) return;
       if(!$(frm1).is(":hidden")){
          $("#tbl1 tbody tr").each(function() {
-            var companycode=$(this).attr("code").split("/")[0];//153-60-00064
+//             var companycode=$(this).attr("code").split("/")[0];//153-60-00064
             var lcode=$(this).attr("code").split("/")[1];
              var strmcode=$(this).find(".mcategorycode").html();//001
-             var mcode=companycode+"/"+lcode+"/"+strmcode;
+             var mcode=lcode+"/"+strmcode;
              
-             var lcompanyname=$(this).attr("name").split("/")[0];//골드스탁
+//              var lcompanyname=$(this).attr("name").split("/")[0];//골드스탁
              var lname=$(this).attr("name").split("/")[1];
              var strmname=$(this).find(".mcategoryname").find(".midname").val();
-             var mname=lcompanyname+"/"+lname+"/"+strmname;
+             var mname=lname+"/"+strmname;
              
             if(strmname!=""){
                $.ajax({
@@ -402,7 +435,7 @@ function resizeRowspan(cls){
             $.ajax({
                type : "post",
                url :"depositaccountinsert",
-               data :{"depositaccountbankname": bankname, "depositaccountcode":code,"depositaccountname":name, "depositrate":rate,"depositaccount_startday":start,"depositamount":amount},
+               data :{"depositAccountBankName": bankname, "depositAccountCode":code,"depositAccountName":name, "depositAccountRate":rate,"depositAccount_startday":start,"depositAccountAmount":amount},
                success: function(data){
                }
             });
@@ -429,13 +462,14 @@ function resizeRowspan(cls){
             $.ajax({
                type : "post",
                url : "loansaccountinsert",
-               data : {"loansaccountbankname": bankname, "loansaccountcode":code, "loansaccountname":name, "loansaccountrate":rate, "loansaccount_startday":start, "loansaccount_endday":end, "loansaccountamount":amount},
+               data : {"loansAccountBankName": bankname, "loansAccountCode":code, "loansAccountName":name, "loansAccountRate":rate, "loansAccount_startDay":start, "loansAccount_endDay":end, "loansAccountAmount":amount},
                success: function(data){
                }
             });
          });
          alert("저장완료 되었습니다.\n수정은 로그인 후 설정탭에서 완료바랍니다.");
          }
+         location.href="logout";
       });
       
 </script>

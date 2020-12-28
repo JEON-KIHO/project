@@ -31,10 +31,14 @@
 <!--      <a href="javascript:window.close()" style="color:gray; margin-left:300px;">close</a>       -->
 </body>
 <script>
+
+var check_num = /^[0-9]$/; // 숫자
+var check_eng = /^[a-zA-Z]$/; // 문자
+var check_spc = /^[~!@#$%^&*()_+|<>?:{}]$/; // 특수문자
+var check_kor = /^[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]$/; // 한글체크
+
    //아이디 값 불러오기
    //아이디 체크여부 확인
-//    $(document).ready(function() {
-	   
 	$("#adminId").focus();
 	
 	   $("#adminId").on("keyup", function(key) {
@@ -60,9 +64,19 @@
 				 }
 			 }
 		  });
-// 	   });
-	   
-	   
+	   });
+		  $("#adminId").on("keyup", function() {
+				var adminId = $("#adminId").val();
+				var lastValue = adminId.substring(adminId.length-1, adminId.length);
+				var value = adminId.substring(0, adminId.length-1);
+				if(adminId.length >= 1) {
+					if(!check_eng.test(lastValue) && !check_num.test(lastValue)) {
+						alert("영어와 숫자만 입력할 수 있습니다.");
+						$("#adminId").val(value);
+					}
+				}
+			});
+		  
 		  $("#btnUse").on("click",function(){
 		      var id=$("#adminId").val();
 		      $("#adminId", opener.document).val(id);
@@ -94,7 +108,6 @@
 //             }
 //          });
 //       });
-   });
    //사용 버튼 누른후 등록화ㅣ면
    
 </script>

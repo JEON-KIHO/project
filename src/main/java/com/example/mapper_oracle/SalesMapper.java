@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.example.domain.DayVO;
+import com.example.domain.SalesVO;
 
 public interface SalesMapper {
 
@@ -24,4 +25,9 @@ public interface SalesMapper {
    public List<HashMap<String, Object>> SRdailyMonthList(@Param("year") String year, @Param("companyCode") String companyCode);
    public List<Integer> SRYearList(String companyCode);
    public List<Integer> SRMonthList(@Param("year") String year, @Param("companyCode") String companyCode);
+   
+   public void salesinsert(SalesVO vo);
+   public List<SalesVO> saleslist(String companyCode);
+   public void salesdelete(@Param ("companyCode") String companyCode, @Param("sales_day") String sales_day, @Param("paytype") String paytype);
 }
+

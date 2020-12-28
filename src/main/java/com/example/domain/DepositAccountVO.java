@@ -7,6 +7,7 @@ public class DepositAccountVO {
    private double depositAccountRate;
    private String depositAccount_startday;
    private double depositAccountAmount;
+   private int rn;
    
    public String getDepositAccountCode() {
       return depositAccountCode;
@@ -43,6 +44,12 @@ public class DepositAccountVO {
    }
    public void setDepositAccountAmount(double depositAccountAmount) {
       this.depositAccountAmount = depositAccountAmount;
+   }
+   public int getRn() {
+      return rn;
+   }
+   public void setRn(int rn) {
+      this.rn = rn;
    }
    @Override
    public String toString() {

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper_oracle.CostAccountMapper">
+<insert id="costinsert">
+   insert into cost(cost_companycode, cost_day, cost_costaccountcode, costamount) values(#{cost_companycode}, #{cost_day},#{cost_costaccountcode},#{costamount})
+</insert>
+<select id="costaccountlist" resultType="hashmap">
+   select * from costaccount
+   </select>
+</mapper>

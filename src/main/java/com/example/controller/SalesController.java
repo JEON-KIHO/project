@@ -286,9 +286,9 @@ public class SalesController {
          @ResponseBody
          public List<HashMap<String, Object>> thisMonthListJson(HttpSession session) {
         	 GregorianCalendar cal = new GregorianCalendar();
-        	 String thisYear = cal.get(GregorianCalendar.YEAR)+"";
+        	 String thisYear = cal.get(GregorianCalendar.YEAR)-1+"";
         	 String thisMonth = cal.get(GregorianCalendar.MONTH)+1+"";
-        	 String date = thisYear +"/"+ "03";
+        	 String date = thisYear +"/"+ "12";
         	 String companyCode = (String) session.getAttribute("companyCode");
            	date = date.substring(2);
         	 int salesAmount = salesMapper.salesAmount(date, companyCode);

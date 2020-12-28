@@ -73,7 +73,7 @@ html, body {
    <div id="divCenter">
    <div class="wrap">
    
-   <form name = "frm" action="insert" method="post">
+   <form name = "frm" action="companyInsert" method="post">
    
       <table>
          <tr>
@@ -87,7 +87,7 @@ html, body {
          </tr>
          <tr>
             <td>법인번호</td><td> 
-              <input type = "text" class = "rd-cblNum" name = "companyCorporate" style="border:none; width:200px; height:30px; border-bottom:1px solid gray;" placeholder="법인번호 입력 ( ' - ' 제외)" maxlength=13></td>
+              <input type = "text" class = "rd-cblNum" name = "companyCorporate" style="border:none; width:200px; height:30px; border-bottom:1px solid gray;" placeholder="법인번호 입력 ( ' - ' 제외)" maxlength=13 id="companyCorporate"></td>
          </tr>
          <tr>
             <td>상호명</td><td><input type = "text" name = "companyName" style="border:none; width:200px; height:30px; border-bottom:1px solid gray;" placeholder="상호명 입력" class="hide"></td>
@@ -144,11 +144,16 @@ html, body {
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
 
+var check_num = /^[0-9]$/; // 숫자
+var check_eng = /^[a-zA-Z]$/; // 문자
+var check_spc = /^[~!@#$%^&*()_+|<>?:{}]$/; // 특수문자
+var check_kor = /^[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]$/; // 한글체크
+
 outLightBox();
 
 $("#span").hide();
-$(".hide").prop("disabled", true);
-$(".rd").prop("disabled", true);
+// $(".hide").prop("disabled", true);
+// $(".rd").prop("disabled", true);
 $("#save").prop("disabled", true);
 $('.rd-cblNum').attr('disabled', true);
 
@@ -167,20 +172,6 @@ $(".rd").on("click", function() {
 	if($(".rd:checked").val() == "개인") {
 		frm.companyName.focus();
 	}
-});
-
-$("#companyCode").keyup(function(key) {
-	var companyCode = $(this).val();
-	if(companyCode.length >= 10) {
-		$("#span").show();
-		if(key.keyCode == 13) {
-			$("#click").click();
-		}
-	}
-	if(companyCode.length < 10) {
-		$("#span").hide();
-	}
-	
 });
 
 $(frm.openDate).focusout(function() {
@@ -260,19 +251,71 @@ $("#adminId").focusout(function() {
 	}
 });
 
+$("#companyCode").keyup(function(key) {
+	var value = "";
+	var companyCode = $("#companyCode").val();
+	var lastValue = companyCode.substring(companyCode.length-1);
+	value = companyCode.substring(0, companyCode.length-1);
+	if(companyCode.length >= 1 && companyCode.length <= 10) {
+		if(!check_num.test(lastValue)) {
+			alert("숫자만 입력할 수 있습니다.");
+			$("#companyCode").val(value);
+		}
+	}
+	if(companyCode.length >= 10) {
+		$("#span").show();
+		if(key.keyCode == 13) {
+			$("#click").click();
+		}
+	}
+	if(companyCode.length < 10) {
+		$("#span").hide();
+	}
+});
+
+$(frm.companyCorporate).keyup(function() {
+	var companyCorporate = $(frm.companyCorporate).val();
+	var lastValue = companyCorporate.substring(companyCorporate.length-1, companyCorporate.length);
+	var value = companyCorporate.substring(0, companyCorporate.length-1);
+	if(companyCorporate.length >= 1) {
+		if(!check_num.test(lastValue)) {
+			alert("숫자만 입력할 수 있습니다.");
+			$(frm.companyCorporate).val(value);
+		}
+	}
+});
+
+$(frm.companyCEO).keyup(function() {
+	var companyCEO = $(frm.companyCEO).val();
+	var lastValue = companyCEO.substring(companyCEO.length-1, companyCEO.length);
+	var value = companyCEO.substring(0, companyCEO.length-1);
+	if(companyCEO.length >= 1) {
+		if(!check_kor.test(lastValue) && !check_eng.test(lastValue)) {
+			alert("한글과 영어만 입력할 수 있습니다.");
+			$(frm.companyCEO).val(value);
+		}
+	}
+});
+
+$("#adminId").keyup(function() {
+	var adminId = $("#adminId").val();
+	var lastValue = adminId.substring(adminId.length-1, adminId.length);
+	var value = adminId.substring(0, adminId.length-1);
+	if(adminId.length >= 1) {
+		if(!check_eng.test(lastValue) && !check_num.test(lastValue)) {
+			alert("영어와 숫자만 입력할 수 있습니다.");
+			$("#adminId").val(value);
+		}
+	}
+});
+
 //유효성 체크 및 저장
    $(frm).submit(function(e) {
          e.preventDefault();
         var radioVal = $('input[name="companyType"]:checked').val();
       frm.companyAddress.value = frm.address.value +", "+ frm.detailaddress.value;
          
-      if (!$(frm.companyName).val()) {
-         alert("상호명을 입력하세요");
-         //커서(포커스)를 아이디 인풋요소로 이동
-         $(frm.companyName).focus();
-         //아래의 submit()을 하면 안되므로...
-         
-      } else if (!$(frm.companyCode).val()) {
+      if (!$(frm.companyCode).val()) {
          alert("사업자 등록번호를 입력하세요");
          $(frm.companyCode).focus();
          
@@ -280,15 +323,13 @@ $("#adminId").focusout(function() {
          alert("사업자 체크해주세요.");
          frm.companyType.focus();
          
-//       }else if(radioVal){
-//          if(radioVal == '법인'){
-//             if(!frm.companyCorporate.value){
-//                alert("법인등록번호를 입력하세요");
-//                frm.companyCorporate.focus();
-//             }
-//        }
-         
-      }else if (!frm.address.value) {
+      } else if (!$(frm.companyName).val()) {
+          alert("상호명을 입력하세요");
+          //커서(포커스)를 아이디 인풋요소로 이동
+          $(frm.companyName).focus();
+          //아래의 submit()을 하면 안되므로...
+          
+       } else if (!frm.address.value) {
          alert("주소를 입력하세요");
          frm.address.focus();
          

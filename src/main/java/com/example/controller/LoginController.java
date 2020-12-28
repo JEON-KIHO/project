@@ -65,12 +65,9 @@ public class LoginController {
   public void main(){
   }
   
-  @RequestMapping("insert")
-  public void insert() {
-  }
   
-  @RequestMapping(value = "insert", method=RequestMethod.POST)
-     public String insertPost(AdminVO vo, @RequestParam("companyType") String companyType){
+  @RequestMapping(value = "companyInsert", method=RequestMethod.POST)
+     public String insertPost(AdminVO vo, @RequestParam("companyType") String companyType, HttpSession session){
         vo.setCompanyType(companyType);
         
         if(vo.getCompanyCode().length() <= 10) {
@@ -91,7 +88,8 @@ public class LoginController {
         }
         
         mapper.insert(vo);
-        
+        session.setAttribute("companyCode", vo.getCompanyCode());
+        session.setAttribute("companyName", vo.getCompanyName());
         return "redirect:category";
      }
   
@@ -252,7 +250,7 @@ public class LoginController {
    }
 
    @RequestMapping("logout")
-   public String logOut(HttpSession session, HttpServletRequest request, HttpServletResponse response) {
+   public String logOut(HttpSession session) {
       session.invalidate();
       return "redirect:login";
    }
@@ -261,9 +259,6 @@ public class LoginController {
    public void idCheck() {
    }
    
-   @RequestMapping("category")
-	public void category() {
-	}
    
   
 
@@ -283,39 +278,12 @@ public class LoginController {
 	
 	
 	
-	@RequestMapping("lcategorylist.json")
-	   @ResponseBody
-	   public List<HashMap<String, Object>> lcategorylist(HttpSession session) {
-		String companyCode = (String) session.getAttribute("companyCode");
-	      List<HashMap<String, Object>> array = cMapper.lcategorylist(companyCode);
-	      return array;
-	   }
+//	@RequestMapping("lcategorylist.json")
+//	   @ResponseBody
+//	   public List<HashMap<String, Object>> lcategorylist(HttpSession session) {
+//		String companyCode = (String) session.getAttribute("companyCode");
+//	      List<HashMap<String, Object>> array = cMapper.lcategorylist(companyCode);
+//	      return array;
+//	   }
 	
-	@RequestMapping("mainThisMonthlyTotal.json")
-	@ResponseBody
-	public List<ArrayList<Object>> mainThisMonthlyTotalJson(String date, HttpSession session) {
-		String companyCode = (String) session.getAttribute("companyCode");
-		date = date.substring(2);
-		
-		HashMap<String, Object> sMap = cMapper.salesThisMonthlyTotal(date, companyCode);
-		HashMap<String, Object> rMap = cMapper.refundThisMonthlyTotal(date, companyCode);
-		HashMap<String, Object> cMap = cMapper.costThisMonthlyTotal(date, companyCode);
-		
-		List<ArrayList<Object>> listArr = new ArrayList<>();
-		ArrayList<Object> arr = new ArrayList<>();
-		arr.add(" ");
-		arr.add("매출");
-		arr.add("환불");
-		arr.add("비용");
-		listArr.add(arr);
-		
-		arr = new ArrayList<>();
-		arr.add(" ");
-		arr.add(sMap.get("SALESAMOUNT"));
-		arr.add(rMap.get("REFUNDAMOUNT"));
-		arr.add(cMap.get("COSTAMOUNT"));
-		listArr.add(arr);
-		
-		return listArr;
-	}
 }

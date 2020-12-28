@@ -94,7 +94,7 @@ public class AssetsController {
    @ResponseBody
    public List<Integer> DEYearListJson(Model model, HttpSession session, String depositAccountCode) {
       String companyCode = (String) session.getAttribute("companyCode");
-        model.addAttribute("DEYearList", Dmapper.DEYearList(depositAccountCode, companyCode));
+//        model.addAttribute("DEYearList", Dmapper.DEYearList(depositAccountCode, companyCode));
      return Dmapper.DEYearList(companyCode, depositAccountCode);
    }
    
@@ -103,15 +103,15 @@ public class AssetsController {
    public List<Integer> DEMonthListJson(Model model, HttpSession session, String year, String depositAccountCode) {
       year = year.substring(2);
       String companyCode = (String) session.getAttribute("companyCode");
-      model.addAttribute("DEMonthList", Dmapper.DEMonthList(year, companyCode, depositAccountCode));
-      return Dmapper.DEMonthList(year, companyCode, depositAccountCode);
+      model.addAttribute("DEMonthList", Dmapper.DEMonthList(companyCode, year, depositAccountCode));
+      return Dmapper.DEMonthList(companyCode, year, depositAccountCode);
    }
    
    @RequestMapping("DEdailyYearList.json")
    @ResponseBody
    public List<HashMap<String, Object>> dailyYearJson(HttpSession session, String depositAccountCode) {
       String companyCode = (String) session.getAttribute("companyCode");
-      List<HashMap<String, Object>> array = Dmapper.DEdailyYearList(depositAccountCode, companyCode);
+      List<HashMap<String, Object>> array = Dmapper.DEdailyYearList(companyCode,depositAccountCode);
       List<HashMap<String, Object>> listArr = new ArrayList<>();
       
       for(int i = 0; i < array.size(); i++) {
@@ -200,15 +200,15 @@ public class AssetsController {
     public List<Integer> LOMonthListJson(Model model, HttpSession session, String year, String loansAccountCode) {
        year = year.substring(2);
        String companyCode = (String) session.getAttribute("companyCode");
-       model.addAttribute("LOMonthList", Lmapper.LOMonthList(year, companyCode, loansAccountCode));
-       return Lmapper.LOMonthList(year, companyCode, loansAccountCode);
+       model.addAttribute("LOMonthList", Lmapper.LOMonthList(companyCode, year, loansAccountCode));
+       return Lmapper.LOMonthList(companyCode, year, loansAccountCode);
     }
     
     @RequestMapping("LOdailyYearList.json")
     @ResponseBody
     public List<HashMap<String, Object>> lodailyYearJson(HttpSession session, String loansAccountCode) {
        String companyCode = (String) session.getAttribute("companyCode");
-       List<HashMap<String, Object>> array = Lmapper.LOdailyYearList(loansAccountCode, companyCode);
+       List<HashMap<String, Object>> array = Lmapper.LOdailyYearList(companyCode, loansAccountCode);
        List<HashMap<String, Object>> listArr = new ArrayList<>();
        
        for(int i = 0; i < array.size(); i++) {

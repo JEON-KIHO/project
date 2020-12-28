@@ -19,11 +19,11 @@ public interface LoansMapper {
    
    public List<LoansVO> loansassetsread(@Param("loansAccountCode")String loansAccountCode, @Param("date")String date);
    
-   public List<Integer> LOYearList(@Param("loansAccountCode")String loansAccountCode, @Param("companyCode")String companyCode);
+   public List<Integer> LOYearList(@Param("companyCode")String companyCode, @Param("loansAccountCode")String loansAccountCode);
      
-   public List<Integer> LOMonthList(@Param("year") String year, @Param("companyCode") String companyCode, @Param("loansAccountCode")String loansAccountCode);
+   public List<Integer> LOMonthList(@Param("companyCode") String companyCode, @Param("year") String year,  @Param("loansAccountCode")String loansAccountCode);
    
-   public List<HashMap<String, Object>> LOdailyYearList(@Param("loansAccountCode")String loansAccountCode, @Param("companyCode")String companyCode);
+   public List<HashMap<String, Object>> LOdailyYearList(@Param("companyCode")String companyCode, @Param("loansAccountCode")String loansAccountCode);
     
    public List<HashMap<String, Object>> LOdailyMonthList(@Param("year") String year, @Param("companyCode") String companyCode, @Param("loansAccountCode")String loansAccountCode);
 }

@@ -24,7 +24,7 @@
 }
 
 #total_chart {
-   margin-left: 50px;
+   margin-left: 30px;
    margin-top: 250px;
 }
 
@@ -38,9 +38,11 @@
 }
 
 #Desposit {
-   margin: 5px 10%;
-   margin-left: 145px;
+   margin: 10px 10%;
+   margin-left: 150px;
    margin-top:50px;
+   width:1300px;
+   
 }
 
 #btLoans {
@@ -53,11 +55,13 @@
 #Loans {
    margin: 10px 10%;
    margin-top:300px;
+   width:1300px;
+   
 }
 
 #divCenter {
    width: 1500px;
-   height: 800px;
+   height: 900px;
    margin-left: 200px;
 }
 
@@ -86,27 +90,31 @@ select {
 }
 
 table #Desposit, table #Loans{
-   width: 1300px;
-   border: 0;
+   width: 1400px;
    margin-top:30px;
-}
-
-.dtd, .ltd {
-   width: 1300px;
-   height: 30px;
    text-align: center;
 }
-
+td {text-align: center; border-bottom: 1px solid #ccc;}
+.dtd, .ltd {
+   width: 1400px;
+   height: 30px;
+   text-align: center;
+   
+   
+}
+.ltd{height:40px;}
 span {
    color: black;
 }
 
    *:focus { outline: none; }
+a:hover{color:red;}
 
 </style>
 </head>
 
 <body>
+
       <jsp:include page="menu.jsp"></jsp:include>
     <div id="divTop"></div>
     <div id="divCenter">
@@ -118,7 +126,7 @@ span {
       </div>   
  
    <div id = "Desposit">
-      <table border = 1 style = "border-collapse:collapse; float:left;">
+      <table style = "border-collapse:collapse; border: 1px solid #ccc; float:left;">
          <tr>
             <td colspan ="4">예금<input type = "button" value = "그래프" id = "btDeposit"></td>
          </tr>
@@ -130,15 +138,15 @@ span {
          </tr>
          <c:forEach items = "${Dlist}" var = "vo">
             <tr>
-               <td>${vo.depositAccountBankName}</td>
-               <td><a onclick = "window.open('depositassets?depositAccountCode=${vo.depositAccountCode}','예금계좌내역', 'width=700, height=600');">${vo.depositAccountCode}</a></td>               <td style="color:red;"><fmt:formatNumber value="${vo.depositBalance}" pattern="#,###"/>원</td>
-               <td>${vo.depositAccountRate}%</td>
+               <td class="dtd">${vo.depositAccountBankName}</td>
+               <td class="dtd" style="cursor: pointer;"><a onclick = "window.open('depositassets?depositAccountCode=${vo.depositAccountCode}','예금계좌내역', 'width=700, height=600');">${vo.depositAccountCode}</a></td><td style="color:red;"><fmt:formatNumber value="${vo.depositBalance}" pattern="#,###"/>원</td>
+               <td class="dtd">${vo.depositAccountRate}%</td>
             </tr>
          </c:forEach>
       </table>
    </div>
    <div id = "Loans">
-      <table border = 1 style = "border-collapse:collapse; margin-top:100px;">
+      <table style = "border-collapse:collapse; border: 1px solid #ccc; margin-top:300px;">
          <tr>
             <td colspan = "8">대출<input type ="button" value = "그래프" id ="btLoans"></td>
          </tr>
@@ -154,13 +162,13 @@ span {
          </tr>
          <c:forEach items = "${Llist}" var = "vo">
             <tr>
-               <td>${vo.loansAccountBankName}</td>
-               <td><a onclick = "window.open('loansassets?loansAccountCode=${vo.loansAccountCode}','대출계좌내역', 'width=700, height=600');">${vo.loansAccountCode}</a></td>               <td>${vo.loansAccount_startDay.substring(0,11)}</td>
-               <td>${vo.loansAccount_endDay.substring(0,11)}</td>
-               <td>${vo.loansAccountRate}%</td>
-               <td style="color:red;"><fmt:formatNumber value="${vo.loansAccountAmount}" pattern="#,###"/>원</td>
-               <td><fmt:formatNumber value="${vo.loansAmount}" pattern="#,###"/>원</td>
-               <td style="color:red;"><fmt:formatNumber value="${vo.loansBalance}" pattern="#,###"/>원</td>
+               <td class="ltd">${vo.loansAccountBankName}</td>
+               <td class="ltd" style="cursor: pointer;"><a onclick = "window.open('loansassets?loansAccountCode=${vo.loansAccountCode}','대출계좌내역', 'width=700, height=600');">${vo.loansAccountCode}</a></td>               <td>${vo.loansAccount_startDay.substring(0,11)}</td>
+               <td class="ltd">${vo.loansAccount_endDay.substring(0,11)}</td>
+               <td class="ltd">${vo.loansAccountRate}%</td>
+               <td class="ltd" style="color:red;"><fmt:formatNumber value="${vo.loansAccountAmount}" pattern="#,###"/>원</td>
+               <td class="ltd"><fmt:formatNumber value="${vo.loansAmount}" pattern="#,###"/>원</td>
+               <td class="ltd" style="color:red;"><fmt:formatNumber value="${vo.loansBalance}" pattern="#,###"/>원</td>
             </tr>
          </c:forEach>
       </table>
@@ -272,8 +280,13 @@ var date = year +"/"+ month;
                      hAxis : {
                          minValue : 0
                       },
-                     
+                      series : {
+                    	  0 : {color: '#A19CFF'},
+                          1 : {color: '#CEFFC7'}
+                          
+                       },
                   };
+                
                 var data = google.visualization.arrayToDataTable(result);
                    var chart = new google.visualization.BarChart(document.getElementById('total_chart'));
                   chart.draw(data, options);

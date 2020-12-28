@@ -25,12 +25,14 @@
    #btnUpdate{margin-left:10px;margin-top:10px;}
    #calendar {width:1344px; overflow:hidden;margin-left:50px;margin-top:20px; border:solid 1px white;}
    .wom1, .wom2, .wom3, .wom4, .wom5, .wom6 {width:190px; height:130px; float:left; border:solid 1px #EAEAEA; background-color:white;}
-   #datePage {overflow: hidden;margin:15px 0px 0px 380px;height:60px;width:600px; text-align:center;}
-   #pre, #next, #sel {width:200px; float:left;}
+   #datePage {overflow: hidden;margin:15px 0px 0px 450px;height:60px;width:600px; text-align:center;}
    
-   #sel {float:left; overflow:hidden; width:150px; text-align:center; cursor:default;}
-	#selDate {float:left; width:150px;}
 	#yearList, #monthList {float:left; width:75px;}
+	
+	#pre, #next {width:160px; float:left;}
+   #sel {float:left; overflow:hidden; width:150px; text-align:center; cursor:default; z-index:500;}
+   #selDate {float:left; width:150px; font-size:25px;}
+   #close:hover, .yData:hover, .mData:hover, #selDate:hover {color:#ccc;}
    
    #costDetail {overflow:hidden; width:400px;}
    .costAccountName, .costAmount, .total, .monthlyCost {float:left;}
@@ -57,39 +59,6 @@
 #nextYear:focus{outline: none;}
 
 
-#preYear:hover {
-    background-color: hsl(190, 100%, 70%);
-    
-}
-#preYear:active{
-   background-color: #0000FF;
-   box-shadow: 0 5px #808080;
-   transform: translateY(4px);
-} 
-#preMonth:hover {
-     background-color: hsl(190, 100%, 70%);
-}
-#preMonth:active {
-    background-color: #0000FF;
-   box-shadow: 0 5px #808080;
-   transform: translateY(4px);
-}
-#nextMonth:hover {
-     background-color: hsl(190, 100%, 70%);
-}
-#nextMonth:active {
-     background-color: #0000FF;
-   box-shadow: 0 5px #808080;
-   transform: translateY(4px);
-}
-#nextYear:hover {
-    background-color: hsl(190, 100%, 70%);
-}
-#nextYear:active {
-      background-color: #0000FF;
-   box-shadow: 0 5px #808080;
-   transform: translateY(4px);
-}
 
    #darken-background {
  position:absolute;
@@ -132,6 +101,30 @@
 
    span {color:black;}
    
+   #divClose {width:150px; overflow:hidden;}
+  #close {float:right; margin:5px 15px 0px 0px; font-size:20px;}
+   
+    #dailyLightBox {
+   position: absolute;
+   top: 0px;
+   left: 0px;
+   right: 0px;
+   height: 100%;
+   display: none;
+   background: rgba(0, 0, 0, 0.1);
+   z-index: 10000;
+   overflow: hidden;
+}
+
+#dailyBox {
+   margin: 235px auto;
+   margin-left:855px;
+   width:150px;
+   height:300px;
+   color:white;
+   background: rgba(0, 0, 0, 0.8);
+}
+   
 </style>
 <body>
    <jsp:include page="menu.jsp"></jsp:include>
@@ -143,8 +136,13 @@
    </div>
    <div id="sel">
 		<div id="selDate"></div>
-		<div id="yearList"></div>
-		<div id="monthList"></div>
+		<div id="dailyLightBox">
+      <div id="dailyBox">
+      <div id="divClose"><div id="close">X</div></div>
+	      <div id="yearList"></div>
+      	  <div id="monthList"></div>
+      	  </div>
+      </div>
 	</div>
    <div id="next">
       <input type="button" value="〉" id="nextMonth">
@@ -168,9 +166,8 @@ style="border: 0; background: white; color: gray; font-size: 20px; float: right;
    <div id="footer"><jsp:include page="footer.jsp" /></div>
 </body>
    <script>
-   $("#selDate").html(<%=thisYear%>-1 +"/"+ "12");
-   $("#yearList").hide();
-   $("#monthList").hide();
+   $("#dailyLightBox").hide();
+   $("#selDate").html(<%=thisYear%>-1 +"/"+ <%=thisMonth%>);
    let year = $("#selDate").html().split("/")[0];
    year = year.trim();
    let month = $("#selDate").html().split("/")[1];
@@ -225,16 +222,12 @@ function start() {
       
       
       
-      
+      $("#close").click(function() {
+    		$("#dailyLightBox").hide();
+    	});
       
       $("#selDate").on("click", function() {
-    		$("#yearList").slideDown();
-    		$("#monthList").slideDown();
-    	});
-
-    	$("#data").on("click", function() {
-    		$("#yearList").slideUp();
-    		$("#monthList").slideUp();
+    	  $("#dailyLightBox").show();
     	});
 
     	$("#yearList").on("click", "#year .yData", function() {
@@ -245,8 +238,7 @@ function start() {
     	$("#monthList").on("click", "#month .mData", function() {
     		month = $(this).attr("id");
     		$("#selDate").html(year +"/"+ month);
-    		$("#yearList").slideUp();
-    		$("#monthList").slideUp();
+    		$("#dailyLightBox").hide();
     		start();
     	});
     	
@@ -532,8 +524,7 @@ function start() {
                                  },
                               series : {
                                  0 : {color : 'pink'},
-                                 1 : {color : 'lightgray'},
-                                 2 : {color : 'red'},
+                                 1 : {color : 'lightgray'}
                                  },
                               bar : {groupWidth : '70%' // 그래프 너비 설정 %
                                  // 그래프 너비 설정 %
@@ -626,13 +617,13 @@ function start() {
                                                                               },
                                                                               series : {
                                                                                  0 : {
-                                                                                    color : 'red'
+                                                                                    color : 'pink'
                                                                                  },
                                                                                  1 : {
-                                                                                    color : 'green'
+                                                                                    color : 'lightgray'
                                                                                  },
                                                                                  2 : {
-                                                                                    color : 'blue'
+                                                                                    color : 'skyblue'
                                                                                  },
 
                                                                               },

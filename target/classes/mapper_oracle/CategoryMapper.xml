@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper_oracle.CategoryMapper">
+<insert id="categoryinsert">
+   insert into category(categorycode, categoryname) values(#{categorycode}, #{categoryname})
+</insert>
+<select id="categorylist" resultType="hashmap">
+   select * from category where categorycode like #{companyCode}||'/%/000' order by categorycode asc
+</select>
+<select id="lcategorylist" resultType="hashmap">
+   select * from category where categorycode like #{companyCode}||'/%'
+</select>
+<update id="categoryupdate">
+   update category set categoryname=#{categoryname} WHERE categoryCODE=#{categorycode}
+</update>
+<select id="dailyList" resultType="com.example.domain.DayVO">
+   select * from day where day like #{date} || '%' order by day
+</select>
+<select id="categoryread" resultType="com.example.domain.CategoryVO">
+   select * from category where categorycode= #{categorycode} or categoryname =#{categoryname}
+</select>
+</mapper>

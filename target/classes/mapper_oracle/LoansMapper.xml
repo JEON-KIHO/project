@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper_oracle.LoansMapper">
+    <select id="Llist" resultType="com.example.domain.LoansVO">
+       select * from loansView where(loansAccountCode, loans_repaymentDay)in (
+      select loansAccountCode, max(loans_repaymentDay) from loansView where loans_companyCode = #{companyCode} group by loansAccountCode) 
+       order by loans_repaymentDay
+    </select>
+    
+    <select id = "loanspercent" resultType = "hashmap">
+       select loansAccountCode, loansAccountBankName, sum(loansBalance) loansPercent from (select * from loansView where(loansAccountCode, loans_repaymentDay)in (
+      select loansAccountCode, max(loans_repaymentDay) from loansView where loans_companyCode = #{companyCode} group by loansAccountCode)
+       order by loans_repaymentDay) group by loansAccountCode, loansAccountBankName
+    </select>
+    
+    <select id = "loansTotal" resultType = "hashmap">
+       select sum(loansBalance) endBalance, max(loans_repaymentDay) day from loansView where (loansAccountCode, loans_repaymentDay) in (select loansAccountCode, max(loans_repaymentDay)
+      from loansView where loans_companyCode = #{companyCode} group by loansAccountCode)
+    </select>
+    
+    <select id = "loansassets" resultType = "com.example.domain.LoansVO">
+      select * from loansaccount where loansAccountCode = #{loansAccountCode}
+   </select>
+    
+   <select id = "loansassetsread" resultType = "com.example.domain.LoansVO">
+      select * from loansView where loansAccountCode = #{loansAccountCode} and loans_repaymentDay like #{date} || '%' order by loans_repaymentDay asc
+   </select>
+   
+   <select id="LOYearList" resultType="integer">
+        select substr(loans_repaymentDay, 1, 2) year from loansView where loans_companyCode = #{companyCode} and loansAccountCode = #{loansAccountCode} group by substr(loans_repaymentDay, 1, 2) order by substr(loans_repaymentDay, 1, 2)
+   </select>
+
+   <select id="LOMonthList" resultType="integer">
+         select substr(loans_repaymentDay, 4, 2) month from loansView where loans_companyCode = #{companyCode} and loans_repaymentDay like #{year} || '%' and loansAccountCode = #{loansAccountCode} group by substr(loans_repaymentDay, 4, 2) order by substr(loans_repaymentDay, 4, 2)
+   </select>
+   
+   <select id="LOdailyYearList" resultType="hashmap">
+        select year from 
+         (select substr(loans_repaymentDay, 1, 2) year from loansView where loans_companyCode = #{companyCode} and loansAccountCode = #{loansAccountCode} order by loans_repaymentDay)
+         group by year
+   </select>
+
+   <select id="LOdailyMonthList" resultType="hashmap">
+         select month from 
+      (select substr(loans_repaymentDay, 1, 2) year, substr(loans_repaymentDay, 4, 2) month from loansView where loans_repaymentDay like #{year} || '%' and loans_companyCode = #{companyCode} and loansAccountCode = #{loansAccountCode} order by loans_repaymentDay)
+      group by month order by month
+   </select>
+</mapper>

@@ -53,7 +53,7 @@
 
 <div id="inven"></div>
 
-<!-- <table id="insertInven"></table> -->
+<table id="insertInven"></table>
 
 <!-- <div id="calendarView"></div> -->
 
@@ -68,7 +68,7 @@ for(var i = 1; i <= 9; i++) {
 	}
 }
 endInvenList();
-calendar();
+// calendar();
 <%-- var year = <%=thisYear%>-1; --%>
 // getMonth();
 <%-- var month = <%=thisMonth%>; --%>
@@ -215,89 +215,89 @@ $("#nextYear").on("click", function() {
 // 		}
 // 	});
 // }
-
-// function endInvenList() {
-// 	var addList = "<tr><td width=300>품목</td><td width=80>기초재고</td><td width=80>입고</td><td width=80>출고</td><td width=80>기말재고</td></tr>";
-// 	$.ajax({
-// 		type:"get",
-// 		url:"endInvenList.json",
-// 		success:function(data) {
-// 			$(data).each(function() {
-// 				var name = this.INVENACCOUNTNAME.split("/")[1];
-// 				var inven = this.ENDINVEN;
-// 				addList += "<tr class='list'>";
-// 				addList += "<td>"+name+"</td>";
-// 				addList += "<td class='inven'>"+inven+"</td>";
-// 				addList += "<td class='tdInvenIn'><input type='text' name='invenIn' class='ipInvenIn' size=2></td>";
-// 				addList += "<td class='tdInvenOut'><input type='text' name='invenOut' class='ipInvenOut' size=2></td>";
-// 				addList += "<td class='tdEndInven'><input type='text' name='endInven' class='ipEndInven' size=2 value='"+inven+"' readonly></td>";
-// 				addList += "</tr>";
+endInvenList();
+function endInvenList() {
+	var addList = "<tr><td width=300>품목</td><td width=80>기초재고</td><td width=80>입고</td><td width=80>출고</td><td width=80>기말재고</td></tr>";
+	$.ajax({
+		type:"get",
+		url:"endInvenList.json",
+		success:function(data) {
+			$(data).each(function() {
+				var name = this.INVENACCOUNTNAME.split("/")[1];
+				var inven = this.ENDINVEN;
+				addList += "<tr class='list'>";
+				addList += "<td>"+name+"</td>";
+				addList += "<td class='inven'>"+inven+"</td>";
+				addList += "<td class='tdInvenIn'><input type='text' name='invenIn' class='ipInvenIn' size=2></td>";
+				addList += "<td class='tdInvenOut'><input type='text' name='invenOut' class='ipInvenOut' size=2></td>";
+				addList += "<td class='tdEndInven'><input type='text' name='endInven' class='ipEndInven' size=2 value='"+inven+"' readonly></td>";
+				addList += "</tr>";
 				
-// 			});
-// 			$("#insertInven").html(addList);
+			});
+			$("#insertInven").html(addList);
 			
-// 		}
-// 	});
-// }
+		}
+	});
+}
 
-// $("#insertInven").on("keyup", ".list .tdInvenIn .ipInvenIn",function() {
-// 	var list = $(this).parent().parent();
-// 	var ipEndInven = list.find(".tdEndInven").find(".ipEndInven");
-// 	var startInven = list.find(".inven").html();
-// 	var invenIn = $(this).val();
-// 	if(list.find(".tdInvenOut").find(".ipInvenOut").val() != "") {
-// 		var invenOut = list.find(".tdInvenOut").find(".ipInvenOut").val();
-// 		var amount = parseInt(startInven) + parseInt(invenIn) - parseInt(invenOut);
-// 		if(!isNaN(amount)) {
-// 			ipEndInven.val(amount);
-// 		}
-// 		if(isNaN(amount)) {
-// 			ipEndInven.val(parseInt(startInven) - parseInt(invenOut));
-// 		}
-// 	}
-// 	if(list.find(".tdInvenOut").find(".ipInvenOut").val() == "") {
-// 		var amount = parseInt(startInven) + parseInt(invenIn);
+$("#insertInven").on("keyup", ".list .tdInvenIn .ipInvenIn",function() {
+	var list = $(this).parent().parent();
+	var ipEndInven = list.find(".tdEndInven").find(".ipEndInven");
+	var startInven = list.find(".inven").html();
+	var invenIn = $(this).val();
+	if(list.find(".tdInvenOut").find(".ipInvenOut").val() != "") {
+		var invenOut = list.find(".tdInvenOut").find(".ipInvenOut").val();
+		var amount = parseInt(startInven) + parseInt(invenIn) - parseInt(invenOut);
+		if(!isNaN(amount)) {
+			ipEndInven.val(amount);
+		}
+		if(isNaN(amount)) {
+			ipEndInven.val(parseInt(startInven) - parseInt(invenOut));
+		}
+	}
+	if(list.find(".tdInvenOut").find(".ipInvenOut").val() == "") {
+		var amount = parseInt(startInven) + parseInt(invenIn);
 		
-// 		if(!isNaN(amount)) {
-// 			ipEndInven.val(amount);
-// 		}
-// 		if(isNaN(amount)) {
-// 			ipEndInven.val("");
-// 		}
-// 	}
-// 	if(ipEndInven.val() == "") {
-// 		ipEndInven.val(startInven);
-// 	}
-// });
+		if(!isNaN(amount)) {
+			ipEndInven.val(amount);
+		}
+		if(isNaN(amount)) {
+			ipEndInven.val("");
+		}
+	}
+	if(ipEndInven.val() == "") {
+		ipEndInven.val(startInven);
+	}
+});
 
-// $("#insertInven").on("keyup", ".list .tdInvenOut .ipInvenOut",function() {
-// 	var list = $(this).parent().parent();
-// 	var ipEndInven = list.find(".tdEndInven").find(".ipEndInven");
-// 	var startInven = list.find(".inven").html();
-// 	var invenOut = $(this).val();
-// 	if(!isNaN(list.find(".tdInvenIn").find(".ipInvenIn").val())) {
-// 		var invenIn = list.find(".tdInvenIn").find(".ipInvenIn").val();
-// 		var amount = parseInt(startInven) + parseInt(invenIn) - parseInt(invenOut);
-// 		if(!isNaN(amount)) {
-// 			ipEndInven.val(amount);
-// 		}
-// 		if(isNaN(amount)) {
-// 			ipEndInven.val(parseInt(startInven) + parseInt(invenIn));
-// 		}
-// 	}
-// 	if(list.find(".tdInvenIn").find(".ipInvenIn").val() == "") {
-// 		var amount = parseInt(startInven) - parseInt(invenOut);
-// 		if(!isNaN(amount)) {
-// 			ipEndInven.val(amount);
-// 		}
-// 		if(isNaN(amount)) {
-// 			ipEndInven.val("");
-// 		}
-// 	}
-// 	if(ipEndInven.val() == "") {
-// 		ipEndInven.val(startInven);
-// 	}
-// });
+$("#insertInven").on("keyup", ".list .tdInvenOut .ipInvenOut",function() {
+	var list = $(this).parent().parent();
+	var ipEndInven = list.find(".tdEndInven").find(".ipEndInven");
+	var startInven = list.find(".inven").html();
+	var invenOut = $(this).val();
+	if(!isNaN(list.find(".tdInvenIn").find(".ipInvenIn").val())) {
+		var invenIn = list.find(".tdInvenIn").find(".ipInvenIn").val();
+		var amount = parseInt(startInven) + parseInt(invenIn) - parseInt(invenOut);
+		if(!isNaN(amount)) {
+			ipEndInven.val(amount);
+		}
+		if(isNaN(amount)) {
+			ipEndInven.val(parseInt(startInven) + parseInt(invenIn));
+		}
+	}
+	if(list.find(".tdInvenIn").find(".ipInvenIn").val() == "") {
+		var amount = parseInt(startInven) - parseInt(invenOut);
+		if(!isNaN(amount)) {
+			ipEndInven.val(amount);
+		}
+		if(isNaN(amount)) {
+			ipEndInven.val("");
+		}
+	}
+	if(ipEndInven.val() == "") {
+		ipEndInven.val(startInven);
+	}
+});
 
 
 function getDate() {

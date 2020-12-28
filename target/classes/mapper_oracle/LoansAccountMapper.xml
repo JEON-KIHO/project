@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper_oracle.LoansAccountMapper">
+<insert id="loansaccountinsert">
+   insert into loansaccount(loansaccountcode, loansaccountbankname, loansaccountname, loansaccountrate, loansaccountamount, loansaccount_startday, loansaccount_endday) values(#{loansAccountCode}, #{loansAccountBankName},#{loansAccountName}, #{loansAccountRate},#{loansAccountAmount},#{loansAccount_startDay},#{loansAccount_endDay})
+</insert>
+<select id="loansaccountlist" resultType="hashmap">
+   select sum(loansamount) sumamount,loansaccountbankname, loans_companycode, loansaccountcode, loansaccountamount 
+   from loansview
+   group by loansaccountcode,loans_companycode,loansaccountbankname, loansaccountcode,loansaccountamount
+</select>
+<insert id="loansinsert">
+   insert into loans(loans_companycode, loans_loansaccountcode, loans_repaymentday, loansamount, loansbalance) 
+   values(#{loans_companyCode}, #{loans_loansAccountCode},#{loans_repaymentDay}, #{loansAmount},#{loansBalance})
+</insert>
+<select id="loansread" resultType="com.example.domain.LoansAccountVO">
+   select rownum rn, tbl.* from (select v.*, l.loansaccountname 
+   from loansview v left join loansaccount l 
+   on l.loansaccountcode=v.loansaccountcode 
+   where v.loansamount=0 and v.loans_companycode=#{companyCode} 
+   order by l.loansaccount_startday asc) tbl
+</select>
+</mapper>

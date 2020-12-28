@@ -19,10 +19,14 @@
    String thisDay = cal.get(GregorianCalendar.DAY_OF_MONTH)+"";
 %>
 <style>
+html, body {margin:0;}
 #datePage {overflow:hidden; text-align:center; margin-left:400px; margin-bottom:20px;}
    #pre, #next {width:160px; float:left;}
    #sel {float:left; overflow:hidden; width:150px; text-align:center; cursor:default; z-index:500;}
-   #selDate {float:left; width:150px;}
+   #selDate {float:left; width:150px; font-size:25px;}
+   #selDate:hover {color:#ccc;}
+    .yData:hover{color:#ccc; cursor:default;}
+   .mData:hover{color:#ccc; cursor:default;}
    #yearList, #monthList {float:left; width:75px;}
    #divCenter {text-align:center; margin-left:300px; margin-top:200px; margin-bottom:150px; width: 1200px;}
    .payTypeGraph, .mcGraph, .st, .total, .lTotal {width:500px; height:60px;}
@@ -30,7 +34,7 @@
 *:focus {outline: none;}
 #tabs li {
 
-   border: 1px solid #597484;
+   border: 1px solid  #6678b1;
    border-radius: 5px;
    text-align: center;
    background-color: white;
@@ -41,10 +45,9 @@
      margin:5px;
      
 }
-   td {border:1px solid #ccc;}
-  #tabs {position:fixed; z-index:1020;}
-  .tab {margin-top:140px; z-index:1100;}
-  #tabs li:hover{background-color: #547484; color:white;}
+   #salesList td {border:1px solid #ccc;}
+  #tabs {position:fixed; z-index:10000;}
+  #tabs li:hover{background-color:#6678b1; color:white;}
   #tabs li:active {transform: translateY(4px);}
   #totalAmount {margin-left:280px; width:840px; border:1px solid #ccc;}
 #preYear {border:0; background:white; font-size:25px;}
@@ -56,22 +59,29 @@
 #nextYear {border:0; background:white;font-size:25px;}
 #nextYear:focus{outline: none;}
  #btnUp{float:right;margin-left:70px;position:fixed;margin-top:80px; border:0; background:white; cursor: pointer;}
- #dailyLightBox {
+ 
+   #divClose {width:150px; overflow:hidden;}
+  #close {float:right; margin:5px 15px 0px 0px; font-size:20px;}
+  
+  #dailyLightBox {
    position: absolute;
    top: 0px;
    left: 0px;
    right: 0px;
    height: 100%;
    display: none;
-   background: rgba(0, 0, 0, 0.1);
+   background: rgba(0, 0, 0, 0);
    z-index: 10000;
    overflow: hidden;
 }
 
 #dailyBox {
-   margin: 235px auto;
+   margin: 240px auto;
    margin-left:870px;
-   background: rgba(0, 0, 0, 0.5);
+   width:150px;
+   height:300px;
+   color:white;
+   background: rgba(0, 0, 0, 0.8);
 }
 </style>
 </head>
@@ -94,6 +104,7 @@
       <div id="selDate"></div>
       <div id="dailyLightBox">
       <div id="dailyBox">
+      <div id="divClose"><div id="close">X</div></div>
 	      <div id="yearList"></div>
       	  <div id="monthList"></div>
       	  </div>
@@ -114,7 +125,7 @@
 </body>
 <script type="text/javascript">
 $("#dailyLightBox").hide();
-$("#selDate").html(<%=thisYear%> +" / "+ "03");
+$("#selDate").html(<%=thisYear%>-1 +" / "+ <%=thisMonth%>);
 let year = $("#selDate").html().split("/")[0];
 year = year.trim();
 let month = $("#selDate").html().split("/")[1];
@@ -153,13 +164,12 @@ $("#tabs").on("click", "li", function() {
 });
 });
 
-$("#selDate").on("click", function() {
-	$("#dailyLightBox").show();
+$("#close").click(function() {
+	$("#dailyLightBox").hide();
 });
 
-$("#salesList").on("click", function() {
-   $("#yearList").slideUp();
-   $("#monthList").slideUp();
+$("#selDate").on("click", function() {
+	$("#dailyLightBox").show();
 });
 
 $("#yearList").on("click", "#year .yData", function() {
@@ -544,8 +554,8 @@ function start() {
                                                         ticks : ['0%', '100%']
                                                      },
                                                      series : {
-                                                        0 : {color: 'red'},
-                                                        1 : {color: 'blue'}
+                                                        0 : {color: 'pink'},
+                                                        1 : {color: 'lightgray'}
                                                         
                                                      },
                                                      bar : {
@@ -599,8 +609,8 @@ function start() {
                                                         ticks : ['0%', '100%']
                                                      },
                                                      series : {
-                                                        0 : {color: 'red'},
-                                                        1 : {color: 'blue'}
+                                                    	 0 : {color: 'pink'},
+                                                         1 : {color: 'lightgray'}
                                                         
                                                      },
                                                      bar : {
@@ -652,8 +662,8 @@ function start() {
                                                         ticks : ['0%', '100%']
                                                      },
                                                      series : {
-                                                        0 : {color: 'red'},
-                                                        1 : {color: 'blue'}
+                                                    	 0 : {color: 'pink'},
+                                                         1 : {color: 'lightgray'}
                                                         
                                                      },
                                                      bar : {
@@ -705,8 +715,8 @@ function start() {
                                                         ticks : ['0%', '100%']
                                                      },
                                                      series : {
-                                                        0 : {color: 'red'},
-                                                        1 : {color: 'blue'}
+                                                    	 0 : {color: 'pink'},
+                                                         1 : {color: 'lightgray'}
                                                         
                                                      },
                                                      bar : {
@@ -746,8 +756,8 @@ function start() {
                                                         ticks : ['0%', '100%']
                                                      },
                                                      series : {
-                                                        0 : {color: 'red'},
-                                                        1 : {color: 'blue'}
+                                                    	 0 : {color: 'pink'},
+                                                         1 : {color: 'lightgray'}
                                                         
                                                      },
                                                      bar : {
